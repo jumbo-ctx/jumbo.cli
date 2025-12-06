@@ -29,17 +29,15 @@
     "templates"
   ],
   "scripts": {
-    "generate:commands": "node scripts/generate-command-registry.mjs",
+    "generate:commands": "node build/generate-command-registry.mjs",
     "prebuild": "npm run generate:commands",
     "build": "tsc && npm run copy:migrations",
-    "copy:migrations": "node scripts/copy-migrations.mjs",
+    "copy:migrations": "node build/copy-migrations.mjs",
     "dev": "tsc --watch",
     "test": "jest",
-    "audit:commands": "node scripts/audit-commands.mjs",
     "lint": "eslint --config eslint.config.mjs \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepublishOnly": "npm run build",
-    "db:query": "node scripts/query-db.mjs",
     "clean:testdata": "rm -rf .jumbo test-integration-*"
   },
   "dependencies": {
