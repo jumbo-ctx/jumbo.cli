@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/yourusername/jumbo.git"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "author": "Josh Wheelock",
   "main": "dist/index.js",
   "bin": {
