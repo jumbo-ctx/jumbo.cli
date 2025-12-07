@@ -1,25 +1,32 @@
 {
-  "name": "@jumbo/cli",
-  "version": "0.1.0-alpha.1",
-  "description": "AI memory like and elephant",
+  "name": "@jumbo-ctx/cli",
+  "version": "1.0.0-alpha.1",
+  "description": "AI memory like and elephant for your coding agent.",
   "keywords": [
     "cli",
+    "command-line",
+    "coding-agent-context",
+    "terminal",
+    "agent-context",
+    "ai-agent-context",
+    "llm-agent-context",
+    "coding-agent-memory",
+    "agent-memory",
+    "ai-agent-memory",
+    "llm-agent-memory",
     "context-engineering",
-    "knowledge-management",
-    "event-sourcing",
-    "developer-tools",
-    "ai-assisted-development"
+    "developer-tools"
   ],
-  "homepage": "https://github.com/yourusername/jumbo#readme",
+  "homepage": "https://github.com/jumbo-ctx/jumbo.cli#readme",
   "bugs": {
-    "url": "https://github.com/yourusername/jumbo/issues"
+    "url": "https://github.com/jumbo-ctx/jumbo.cli/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/jumbo.git"
+    "url": "git+https://github.com/jumbo-ctx/jumbo.cli.git"
   },
   "license": "AGPL-3.0",
-  "author": "Josh Wheelock",
+  "author": "Josh Wheelock <josh@jumbo.tech.com> (https://jumbo.tech)",
   "main": "dist/index.js",
   "bin": {
     "jumbo": "dist/cli.js"
