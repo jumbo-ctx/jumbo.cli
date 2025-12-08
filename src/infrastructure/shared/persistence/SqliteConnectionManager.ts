@@ -45,7 +45,11 @@
  */
 
 import Database from "better-sqlite3";
+import fs from "fs";
+import path from "path";
 import { IDbConnectionManager } from "./IDbConnectionManager.js";
+import { MigrationRunner } from "./MigrationRunner.js";
+import { getNamespaceMigrations } from "./migrations.config.js";
 
 export class SqliteConnectionManager implements IDbConnectionManager {
   private connection: Database.Database;
@@ -55,15 +59,27 @@ export class SqliteConnectionManager implements IDbConnectionManager {
    *
    * RAII Pattern: Resource acquisition happens here.
    * The database connection is opened immediately and configured.
+   * For new databases, migrations are run automatically.
    *
    * @param dbPath - Absolute path to the SQLite database file
    */
   constructor(dbPath: string) {
+    // Check if this is a new database (file doesn't exist yet)
+    const isNewDatabase = !fs.existsSync(dbPath);
+
     // RAII: Acquire resource on construction
     this.connection = new Database(dbPath);
 
     // Configure database for optimal performance
     this.connection.pragma("journal_mode = WAL"); // Write-Ahead Logging for better concurrency
+
+    // Run migrations automatically for new databases
+    if (isNewDatabase) {
+      const infrastructureDir = path.resolve(__dirname, "../..");
+      const migrations = getNamespaceMigrations(infrastructureDir);
+      const migrationRunner = new MigrationRunner(this.connection);
+      migrationRunner.runNamespaceMigrations(migrations);
+    }
   }
 
   /**

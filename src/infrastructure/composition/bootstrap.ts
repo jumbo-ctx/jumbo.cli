@@ -1,9 +1,27 @@
+/**
+ * Composition Root - Dependency Injection Configuration
+ *
+ * This is where ALL dependency wiring happens. The single place that knows
+ * about concrete infrastructure implementations and assembles them into
+ * the ApplicationContainer.
+ *
+ * Responsibilities:
+ * - Instantiate all infrastructure implementations
+ * - Wire dependencies together
+ * - Manage infrastructure state (directories, databases, migrations)
+ * - Return a container that presentation layer consumes
+ *
+ * No other layer should instantiate infrastructure. Controllers receive
+ * the container and use it - they never know what's inside.
+ */
+
 import Database from "better-sqlite3";
 import path from "path";
 import { SystemClock } from "../shared/system/SystemClock.js";
 import { FsEventStore } from "../shared/persistence/FsEventStore.js";
 import { SqliteConnectionManager } from "../shared/persistence/SqliteConnectionManager.js";
 import { MigrationRunner } from "../shared/persistence/MigrationRunner.js";
+import { getNamespaceMigrations } from "../shared/persistence/migrations.config.js";
 import { InProcessEventBus } from "../shared/messaging/InProcessEventBus.js";
 import { IDbConnectionManager } from "../shared/persistence/IDbConnectionManager.js";
 
@@ -134,6 +152,8 @@ import { SqliteValuePropositionRemovedProjector } from "../project-knowledge/val
 import { SqliteProjectInitializedProjector } from "../project-knowledge/project/init/SqliteProjectInitializedProjector.js";
 import { SqliteProjectUpdatedProjector } from "../project-knowledge/project/update/SqliteProjectUpdatedProjector.js";
 import { SqliteProjectContextReader } from "../project-knowledge/project/query/SqliteProjectContextReader.js";
+// Project Services
+import { AgentFileProtocol } from "../project-knowledge/project/init/AgentFileProtocol.js";
 
 // Event Handlers (Projection Handlers)
 import { SessionStartedEventHandler } from "../../application/work/sessions/start/SessionStartedEventHandler.js";
@@ -288,6 +308,7 @@ import { IProjectUpdateReader } from "../../application/project-knowledge/projec
 import { IProjectContextReader } from "../../application/project-knowledge/project/query/IProjectContextReader.js";
 import { IProjectInitializedEventWriter } from "../../application/project-knowledge/project/init/IProjectInitializedEventWriter.js";
 import { IProjectUpdatedEventWriter } from "../../application/project-knowledge/project/update/IProjectUpdatedEventWriter.js";
+import { IAgentFileProtocol } from "../../application/project-knowledge/project/init/IAgentFileProtocol.js";
 
 // Port interfaces for session event stores - decomposed by use case
 import { ISessionStartedEventWriter } from "../../application/work/sessions/start/ISessionStartedEventWriter.js";
@@ -469,6 +490,8 @@ export interface ApplicationContainer {
   // Project Event Stores - decomposed by use case
   projectInitializedEventStore: IProjectInitializedEventWriter;
   projectUpdatedEventStore: IProjectUpdatedEventWriter;
+  // Project Services
+  agentFileProtocol: IAgentFileProtocol;
   // Audience Event Stores - decomposed by use case
   audienceAddedEventStore: IAudienceAddedEventWriter;
   audienceUpdatedEventStore: IAudienceUpdatedEventWriter;
@@ -514,7 +537,14 @@ export interface ApplicationContainer {
  */
 export function bootstrap(jumboRoot: string): ApplicationContainer {
   // ============================================================
-  // STEP 1: Create Core Infrastructure
+  // STEP 1: Ensure infrastructure directory exists
+  // ============================================================
+
+  const fs = require("fs-extra");
+  fs.ensureDirSync(jumboRoot);
+
+  // ============================================================
+  // STEP 2: Create Core Infrastructure
   // ============================================================
 
   const clock = new SystemClock();
@@ -529,28 +559,7 @@ export function bootstrap(jumboRoot: string): ApplicationContainer {
 
   const migrationRunner = new MigrationRunner(db);
   const infrastructureDir = path.resolve(__dirname, "..");
-
-  // Define all namespace migration directories following Clean Screaming Architecture
-  const namespaceMigrations = [
-    // Work category
-    { namespace: "work/sessions", path: path.join(infrastructureDir, "work/sessions/migrations") },
-    { namespace: "work/goals", path: path.join(infrastructureDir, "work/goals/migrations") },
-    // Solution category
-    { namespace: "solution/decisions", path: path.join(infrastructureDir, "solution/decisions/migrations") },
-    { namespace: "solution/architecture", path: path.join(infrastructureDir, "solution/architecture/migrations") },
-    { namespace: "solution/components", path: path.join(infrastructureDir, "solution/components/migrations") },
-    { namespace: "solution/dependencies", path: path.join(infrastructureDir, "solution/dependencies/migrations") },
-    { namespace: "solution/guidelines", path: path.join(infrastructureDir, "solution/guidelines/migrations") },
-    { namespace: "solution/invariants", path: path.join(infrastructureDir, "solution/invariants/migrations") },
-    // Project knowledge category
-    { namespace: "project-knowledge/project", path: path.join(infrastructureDir, "project-knowledge/project/migrations") },
-    { namespace: "project-knowledge/audiences", path: path.join(infrastructureDir, "project-knowledge/audiences/migrations") },
-    { namespace: "project-knowledge/audience-pains", path: path.join(infrastructureDir, "project-knowledge/audience-pains/migrations") },
-    { namespace: "project-knowledge/value-propositions", path: path.join(infrastructureDir, "project-knowledge/value-propositions/migrations") },
-    // Relations category
-    { namespace: "relations", path: path.join(infrastructureDir, "relations/migrations") },
-  ];
-
+  const namespaceMigrations = getNamespaceMigrations(infrastructureDir);
   migrationRunner.runNamespaceMigrations(namespaceMigrations);
 
   // ============================================================
@@ -603,6 +612,8 @@ export function bootstrap(jumboRoot: string): ApplicationContainer {
   // Project Event Stores - decomposed by use case
   const projectInitializedEventStore = new FsProjectInitializedEventStore(jumboRoot);
   const projectUpdatedEventStore = new FsProjectUpdatedEventStore(jumboRoot);
+  // Project Services
+  const agentFileProtocol = new AgentFileProtocol();
   // Audience Event Stores - decomposed by use case
   const audienceAddedEventStore = new FsAudienceAddedEventStore(jumboRoot);
   const audienceUpdatedEventStore = new FsAudienceUpdatedEventStore(jumboRoot);
@@ -956,6 +967,8 @@ export function bootstrap(jumboRoot: string): ApplicationContainer {
     // Project Event Stores - decomposed by use case
     projectInitializedEventStore,
     projectUpdatedEventStore,
+    // Project Services
+    agentFileProtocol,
     // Audience Event Stores - decomposed by use case
     audienceAddedEventStore,
     audienceUpdatedEventStore,
