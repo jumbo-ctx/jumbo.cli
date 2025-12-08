@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * Jumbo CLI Entry Point
+ * Jumbo CLI Entry Point (Composition Root Consumer)
  *
- * Minimal, clean CLI setup using auto-generated command registry.
- * Commands are discovered at build-time from src/presentation/cli/commands/
+ * This is the application's main() - it bootstraps and routes, nothing more.
+ *
+ * Responsibilities:
+ * - Call the composition root (bootstrap) to wire dependencies
+ * - Route commands to controllers
+ * - Handle top-level concerns (global flags, help display)
+ *
+ * This file should NOT contain business logic, infrastructure instantiation,
+ * or direct infrastructure imports beyond the composition root.
  */
 
 import { Command } from "commander";
@@ -205,11 +212,9 @@ program.helpInformation = function () {
   // Normal command execution flow
   const jumboRoot = path.join(process.cwd(), ".jumbo");
   const isProjectInit = args.includes("project") && args.includes("init");
-
-  // Don't check project init if this is a help command for a subcommand
   const isSubcommandHelp = (args.includes('--help') || args.includes('-h')) && args.length > 3;
 
-  // Check if project is initialized (except for project init command or help)
+  // Validation: non-init commands require project to be initialized
   if (!isProjectInit && !isSubcommandHelp && !(await fs.pathExists(jumboRoot))) {
     const renderer = Renderer.getInstance();
     renderer.error("Project not initialized. Run 'jumbo project init' first.");
@@ -217,11 +222,9 @@ program.helpInformation = function () {
   }
 
   // Create container (RAII: resources acquired here)
-  // For project init, bootstrap will fail since .jumbo doesn't exist yet,
-  // so we pass undefined container and let project init handle its own setup
   let container: ApplicationContainer | undefined;
 
-  if (!isProjectInit && !isSubcommandHelp) {
+  if (!isSubcommandHelp) {
     container = bootstrap(jumboRoot);
   }
 
