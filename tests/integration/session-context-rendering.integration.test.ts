@@ -52,7 +52,7 @@ describe("Integration: Session Context Rendering", () => {
 
     // Publish SessionStarted event
     await container.eventBus.publish({
-      type: "SessionStarted",
+      type: "SessionStartedEvent",
       aggregateId: sessionId,
       version: 1,
       timestamp: new Date().toISOString(),
@@ -98,7 +98,7 @@ describe("Integration: Session Context Rendering", () => {
     // ============================================================
 
     await container.eventBus.publish({
-      type: "DecisionAdded",
+      type: "DecisionAddedEvent",
       aggregateId: decisionId,
       version: 1,
       timestamp: new Date().toISOString(),
@@ -116,7 +116,7 @@ describe("Integration: Session Context Rendering", () => {
     // ============================================================
 
     await container.eventBus.publish({
-      type: "SessionEnded",
+      type: "SessionEndedEvent",
       aggregateId: sessionId,
       version: 2,
       timestamp: new Date().toISOString(),

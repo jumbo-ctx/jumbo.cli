@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { DecisionAdded } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
+import { DecisionAddedEvent } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
 import { IDecisionAddedProjector } from "./IDecisionAddedProjector.js";
 
 /**
@@ -11,7 +11,7 @@ export class DecisionAddedEventHandler implements IEventHandler {
   constructor(private readonly projector: IDecisionAddedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const decisionAddedEvent = event as DecisionAdded;
+    const decisionAddedEvent = event as DecisionAddedEvent;
     await this.projector.applyDecisionAdded(decisionAddedEvent);
   }
 }

@@ -7,13 +7,13 @@
 
 import { Database } from "better-sqlite3";
 import { ISessionResumedProjector } from "../../../../application/work/sessions/resume/ISessionResumedProjector.js";
-import { SessionResumed } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
+import { SessionResumedEvent } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
 import { SessionStatus } from "../../../../domain/work/sessions/Constants.js";
 
 export class SqliteSessionResumedProjector implements ISessionResumedProjector {
   constructor(private db: Database) {}
 
-  async applySessionResumed(event: SessionResumed): Promise<void> {
+  async applySessionResumed(event: SessionResumedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE session_views
       SET status = ?,

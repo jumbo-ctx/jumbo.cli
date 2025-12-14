@@ -1,9 +1,9 @@
 // Component event types
 export const ComponentEventType = {
-  ADDED: 'ComponentAdded',
-  UPDATED: 'ComponentUpdated',
-  DEPRECATED: 'ComponentDeprecated',
-  REMOVED: 'ComponentRemoved'
+  ADDED: 'ComponentAddedEvent',
+  UPDATED: 'ComponentUpdatedEvent',
+  DEPRECATED: 'ComponentDeprecatedEvent',
+  REMOVED: 'ComponentRemovedEvent'
 } as const;
 
 export type ComponentEventTypeValue = typeof ComponentEventType[keyof typeof ComponentEventType];

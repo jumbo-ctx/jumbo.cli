@@ -4,7 +4,7 @@
 
 import { Relation } from "../../../src/domain/relations/Relation";
 import { RelationEventType, EntityType } from "../../../src/domain/relations/Constants";
-import { RelationAdded } from "../../../src/domain/relations/EventIndex";
+import { RelationAddedEvent } from "../../../src/domain/relations/EventIndex";
 
 describe("Relation Aggregate", () => {
   describe("add()", () => {
@@ -239,8 +239,8 @@ describe("Relation Aggregate", () => {
   describe("rehydrate()", () => {
     it("should rebuild aggregate from event history", () => {
       // Arrange
-      const event: RelationAdded = {
-        type: "RelationAdded",
+      const event: RelationAddedEvent = {
+        type: "RelationAddedEvent",
         aggregateId: "relation_123",
         version: 1,
         timestamp: "2025-01-01T00:00:00Z",

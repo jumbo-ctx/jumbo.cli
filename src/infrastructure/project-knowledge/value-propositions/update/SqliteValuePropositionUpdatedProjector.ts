@@ -1,5 +1,5 @@
 /**
- * SqliteValuePropositionUpdatedProjector - SQLite projector for ValuePropositionUpdated event.
+ * SqliteValuePropositionUpdatedProjector - SQLite projector for ValuePropositionUpdatedEvent event.
  *
  * Implements IValuePropositionUpdatedProjector and IValuePropositionUpdateReader for projecting
  * value proposition update events to the SQLite read model.
@@ -8,7 +8,7 @@
 import { Database } from "better-sqlite3";
 import { IValuePropositionUpdatedProjector } from "../../../../application/project-knowledge/value-propositions/update/IValuePropositionUpdatedProjector.js";
 import { IValuePropositionUpdateReader } from "../../../../application/project-knowledge/value-propositions/update/IValuePropositionUpdateReader.js";
-import { ValuePropositionUpdated } from "../../../../domain/project-knowledge/value-propositions/update/ValuePropositionUpdatedEvent.js";
+import { ValuePropositionUpdatedEvent } from "../../../../domain/project-knowledge/value-propositions/update/ValuePropositionUpdatedEvent.js";
 import { ValuePropositionView } from "../../../../application/project-knowledge/value-propositions/ValuePropositionView.js";
 
 export class SqliteValuePropositionUpdatedProjector
@@ -16,7 +16,7 @@ export class SqliteValuePropositionUpdatedProjector
 {
   constructor(private db: Database) {}
 
-  async applyValuePropositionUpdated(event: ValuePropositionUpdated): Promise<void> {
+  async applyValuePropositionUpdated(event: ValuePropositionUpdatedEvent): Promise<void> {
     // Build dynamic UPDATE statement based on provided fields
     const updates: string[] = [];
     const values: unknown[] = [];

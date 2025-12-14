@@ -1,9 +1,9 @@
 import { BaseAggregate } from "../../shared/BaseAggregate.js";
 import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { ValuePropositionAdded } from "./add/ValuePropositionAddedEvent.js";
-import { ValuePropositionUpdated } from "./update/ValuePropositionUpdatedEvent.js";
-import { ValuePropositionRemoved } from "./remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionAddedEvent } from "./add/ValuePropositionAddedEvent.js";
+import { ValuePropositionUpdatedEvent } from "./update/ValuePropositionUpdatedEvent.js";
+import { ValuePropositionRemovedEvent } from "./remove/ValuePropositionRemovedEvent.js";
 import { ValuePropositionProjection, ValuePropositionState, ValuePropositionEvent } from "./ValuePropositionProjection.js";
 import {
   ValuePropositionEventType,
@@ -57,7 +57,7 @@ export class ValueProposition extends BaseAggregate<
     }
 
     // Use BaseAggregate.makeEvent (no need to reimplement!)
-    return this.makeEvent<ValuePropositionAdded>(
+    return this.makeEvent<ValuePropositionAddedEvent>(
       ValuePropositionEventType.ADDED,
       {
         title,
@@ -74,7 +74,7 @@ export class ValueProposition extends BaseAggregate<
     description?: string,
     benefit?: string,
     measurableOutcome?: string | null
-  ): ValuePropositionUpdated {
+  ): ValuePropositionUpdatedEvent {
     // 1. Ensure at least one field is being updated
     if (
       title === undefined &&
@@ -100,7 +100,7 @@ export class ValueProposition extends BaseAggregate<
     }
 
     // 3. Create and return event using BaseAggregate.makeEvent
-    return this.makeEvent<ValuePropositionUpdated>(
+    return this.makeEvent<ValuePropositionUpdatedEvent>(
       ValuePropositionEventType.UPDATED,
       {
         title,
@@ -112,10 +112,10 @@ export class ValueProposition extends BaseAggregate<
     );
   }
 
-  remove(): ValuePropositionRemoved {
+  remove(): ValuePropositionRemovedEvent {
     // No validation needed for removal
     // Use BaseAggregate.makeEvent with empty payload
-    return this.makeEvent<ValuePropositionRemoved>(
+    return this.makeEvent<ValuePropositionRemovedEvent>(
       ValuePropositionEventType.REMOVED,
       {}, // Empty payload as per event definition
       ValuePropositionProjection.apply

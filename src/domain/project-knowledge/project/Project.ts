@@ -11,7 +11,7 @@ import {
 } from "../../shared/BaseAggregate.js";
 import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { ProjectEvent, ProjectInitialized, ProjectUpdated } from "./EventIndex.js";
+import { ProjectEvent, ProjectInitializedEvent, ProjectUpdatedEvent } from "./EventIndex.js";
 import { ProjectEventType, ProjectErrorMessages } from "./Constants.js";
 import { NAME_RULES } from "./rules/NameRules.js";
 import { PURPOSE_RULES } from "./rules/PurposeRules.js";
@@ -40,7 +40,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
   static apply(state: ProjectState, event: ProjectEvent): void {
     switch (event.type) {
       case ProjectEventType.INITIALIZED: {
-        const e = event as ProjectInitialized;
+        const e = event as ProjectInitializedEvent;
         state.name = e.payload.name;
         state.purpose = e.payload.purpose;
         state.boundaries = e.payload.boundaries;
@@ -48,7 +48,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
         break;
       }
       case ProjectEventType.UPDATED: {
-        const e = event as ProjectUpdated;
+        const e = event as ProjectUpdatedEvent;
         if (e.payload.purpose !== undefined) state.purpose = e.payload.purpose;
         if (e.payload.boundaries !== undefined) state.boundaries = e.payload.boundaries;
         state.version = e.version;
@@ -106,7 +106,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
     name: string,
     purpose?: string,
     boundaries?: string[]
-  ): ProjectInitialized {
+  ): ProjectInitializedEvent {
     // State validation - can't initialize twice
     if (this.state.version > 0) {
       throw new Error(ProjectErrorMessages.ALREADY_INITIALIZED);
@@ -118,7 +118,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
     if (boundaries) ValidationRuleSet.ensure(boundaries, BOUNDARY_RULES);
 
     // Use BaseAggregate.makeEvent (no need to reimplement!)
-    return this.makeEvent<ProjectInitialized>(
+    return this.makeEvent<ProjectInitializedEvent>(
       ProjectEventType.INITIALIZED,
       {
         name,
@@ -142,7 +142,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
   update(
     purpose?: string | null,
     boundaries?: string[]
-  ): ProjectUpdated | null {
+  ): ProjectUpdatedEvent | null {
     // State validation - must be initialized
     if (this.state.version === 0) {
       throw new Error(ProjectErrorMessages.NOT_INITIALIZED);
@@ -175,7 +175,7 @@ export class Project extends BaseAggregate<ProjectState, ProjectEvent> {
     }
 
     // Create and return event with only changed fields
-    return this.makeEvent<ProjectUpdated>(
+    return this.makeEvent<ProjectUpdatedEvent>(
       ProjectEventType.UPDATED,
       changes,
       Project.apply

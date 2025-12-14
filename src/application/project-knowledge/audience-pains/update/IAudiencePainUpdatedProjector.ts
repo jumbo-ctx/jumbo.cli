@@ -1,9 +1,9 @@
-import { AudiencePainUpdated } from "../../../../domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
+import { AudiencePainUpdatedEvent } from "../../../../domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
 
 /**
- * Port interface for projecting AudiencePainUpdated events to the read model.
+ * Port interface for projecting AudiencePainUpdatedEvent events to the read model.
  * Used by AudiencePainUpdatedEventHandler to update the projection store.
  */
 export interface IAudiencePainUpdatedProjector {
-  applyAudiencePainUpdated(event: AudiencePainUpdated): Promise<void>;
+  applyAudiencePainUpdated(event: AudiencePainUpdatedEvent): Promise<void>;
 }

@@ -13,9 +13,9 @@ import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
 import {
   AudienceEvent,
-  AudienceAdded,
-  AudienceUpdated,
-  AudienceRemoved,
+  AudienceAddedEvent,
+  AudienceUpdatedEvent,
+  AudienceRemovedEvent,
 } from "./EventIndex.js";
 import {
   AudienceEventType,
@@ -50,7 +50,7 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
   static apply(state: AudienceState, event: AudienceEvent): void {
     switch (event.type) {
       case AudienceEventType.ADDED: {
-        const e = event as AudienceAdded;
+        const e = event as AudienceAddedEvent;
         state.name = e.payload.name;
         state.description = e.payload.description;
         state.priority = e.payload.priority;
@@ -58,7 +58,7 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
         break;
       }
       case AudienceEventType.UPDATED: {
-        const e = event as AudienceUpdated;
+        const e = event as AudienceUpdatedEvent;
         // Update only changed fields
         if (e.payload.name !== undefined) state.name = e.payload.name;
         if (e.payload.description !== undefined)
@@ -120,14 +120,14 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
    * @param name - Audience name (required)
    * @param description - Who they are and what they do (required)
    * @param priority - Priority level: primary, secondary, or tertiary (required)
-   * @returns AudienceAdded event
+   * @returns AudienceAddedEvent event
    * @throws Error if audience already exists or validation fails
    */
   add(
     name: string,
     description: string,
     priority: AudiencePriorityType
-  ): AudienceAdded {
+  ): AudienceAddedEvent {
     // State validation - can't add twice
     if (this.state.version > 0) {
       throw new Error(AudienceErrorMessages.ALREADY_EXISTS);
@@ -139,7 +139,7 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
     ValidationRuleSet.ensure(priority, PRIORITY_RULES);
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<AudienceAdded>(
+    return this.makeEvent<AudienceAddedEvent>(
       AudienceEventType.ADDED,
       {
         name,
@@ -157,14 +157,14 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
    * @param name - Updated audience name (optional)
    * @param description - Updated description (optional)
    * @param priority - Updated priority level (optional)
-   * @returns AudienceUpdated event
+   * @returns AudienceUpdatedEvent event
    * @throws Error if audience doesn't exist, no changes detected, or validation fails
    */
   update(
     name?: string,
     description?: string,
     priority?: AudiencePriorityType
-  ): AudienceEvent {
+  ): AudienceUpdatedEvent {
     // State validation - must exist before updating
     if (this.state.version === 0) {
       throw new Error(AudienceErrorMessages.NOT_FOUND);
@@ -205,7 +205,7 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
     }
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent(
+    return this.makeEvent<AudienceUpdatedEvent>(
       AudienceEventType.UPDATED,
       payload,
       Audience.apply
@@ -217,10 +217,10 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
    * Marks the audience as removed (soft-delete).
    *
    * @param reason - Optional reason for removal
-   * @returns AudienceRemoved event
+   * @returns AudienceRemovedEvent event
    * @throws Error if audience doesn't exist or is already removed
    */
-  remove(reason?: string): AudienceRemoved {
+  remove(reason?: string): AudienceRemovedEvent {
     // State validation - must exist before removing
     if (this.state.version === 0) {
       throw new Error(AudienceErrorMessages.NOT_FOUND);
@@ -232,7 +232,7 @@ export class Audience extends BaseAggregate<AudienceState, AudienceEvent> {
     }
 
     // Create and return event
-    return this.makeEvent<AudienceRemoved>(
+    return this.makeEvent<AudienceRemovedEvent>(
       AudienceEventType.REMOVED,
       {
         name: this.state.name,

@@ -7,8 +7,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface DependencyRemoved extends BaseEvent {
-  readonly type: "DependencyRemoved";
+export interface DependencyRemovedEvent extends BaseEvent {
+  readonly type: "DependencyRemovedEvent";
   readonly payload: {
     readonly reason: string | null;  // Optional: why it was removed
   };

@@ -5,14 +5,14 @@
 import { Database } from "better-sqlite3";
 import { IInvariantUpdatedProjector } from "../../../../application/solution/invariants/update/IInvariantUpdatedProjector.js";
 import { IInvariantUpdateReader } from "../../../../application/solution/invariants/update/IInvariantUpdateReader.js";
-import { InvariantUpdated } from "../../../../domain/solution/invariants/update/InvariantUpdatedEvent.js";
+import { InvariantUpdatedEvent } from "../../../../domain/solution/invariants/update/InvariantUpdatedEvent.js";
 import { InvariantView } from "../../../../application/solution/invariants/InvariantView.js";
 import { UUID } from "../../../../domain/shared/BaseEvent.js";
 
 export class SqliteInvariantUpdatedProjector implements IInvariantUpdatedProjector, IInvariantUpdateReader {
   constructor(private db: Database) {}
 
-  async applyInvariantUpdated(event: InvariantUpdated): Promise<void> {
+  async applyInvariantUpdated(event: InvariantUpdatedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE invariant_views
       SET title = COALESCE(?, title),

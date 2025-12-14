@@ -5,13 +5,13 @@
 import { Database } from "better-sqlite3";
 import { IProjectInitializedProjector } from "../../../../application/project-knowledge/project/init/IProjectInitializedProjector.js";
 import { IProjectInitReader } from "../../../../application/project-knowledge/project/init/IProjectInitReader.js";
-import { ProjectInitialized } from "../../../../domain/project-knowledge/project/init/ProjectInitializedEvent.js";
+import { ProjectInitializedEvent } from "../../../../domain/project-knowledge/project/init/ProjectInitializedEvent.js";
 import { ProjectView } from "../../../../application/project-knowledge/project/ProjectView.js";
 
 export class SqliteProjectInitializedProjector implements IProjectInitializedProjector, IProjectInitReader {
   constructor(private db: Database) {}
 
-  async applyProjectInitialized(event: ProjectInitialized): Promise<void> {
+  async applyProjectInitialized(event: ProjectInitializedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO project_views (
         projectId, name, purpose, boundaries,

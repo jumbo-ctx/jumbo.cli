@@ -28,8 +28,8 @@ export type RelationStrengthValue = typeof RelationStrength[keyof typeof Relatio
 
 // Relation event types
 export const RelationEventType = {
-  ADDED: 'RelationAdded',
-  REMOVED: 'RelationRemoved'
+  ADDED: 'RelationAddedEvent',
+  REMOVED: 'RelationRemovedEvent'
 } as const;
 
 export type RelationEventTypeValue = typeof RelationEventType[keyof typeof RelationEventType];

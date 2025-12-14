@@ -7,7 +7,7 @@ import { RemoveGuidelineCommand } from "../../../../src/application/solution/gui
 import { IGuidelineRemovedEventWriter } from "../../../../src/application/solution/guidelines/remove/IGuidelineRemovedEventWriter";
 import { IGuidelineRemovedEventReader } from "../../../../src/application/solution/guidelines/remove/IGuidelineRemovedEventReader";
 import { IEventBus } from "../../../../src/application/shared/messaging/IEventBus";
-import { GuidelineEvent, GuidelineRemoved } from "../../../../src/domain/solution/guidelines/EventIndex";
+import { GuidelineEvent, GuidelineRemovedEvent } from "../../../../src/domain/solution/guidelines/EventIndex";
 import { GuidelineEventType } from "../../../../src/domain/solution/guidelines/Constants";
 
 describe("RemoveGuidelineCommandHandler", () => {
@@ -69,7 +69,7 @@ describe("RemoveGuidelineCommandHandler", () => {
 
       // Verify event was appended to event store
       expect(mockEventWriter.append).toHaveBeenCalledTimes(1);
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemoved;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemovedEvent;
       expect(appendedEvent.type).toBe(GuidelineEventType.REMOVED);
       expect(appendedEvent.aggregateId).toBe("gl_123");
       expect(appendedEvent.version).toBe(2);
@@ -113,7 +113,7 @@ describe("RemoveGuidelineCommandHandler", () => {
 
       // Verify event was appended with reason
       expect(mockEventWriter.append).toHaveBeenCalledTimes(1);
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemoved;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemovedEvent;
       expect(appendedEvent.type).toBe(GuidelineEventType.REMOVED);
       expect(appendedEvent.payload.reason).toBe("Superseded by new testing framework");
 
@@ -160,7 +160,7 @@ describe("RemoveGuidelineCommandHandler", () => {
 
       // Assert
       expect(mockEventWriter.append).toHaveBeenCalledTimes(1);
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemoved;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as GuidelineRemovedEvent;
       expect(appendedEvent.version).toBe(3); // v1: add, v2: update, v3: remove
       expect(appendedEvent.payload.reason).toBe("No longer applicable");
     });

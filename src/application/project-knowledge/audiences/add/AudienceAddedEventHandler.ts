@@ -1,19 +1,19 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { AudienceAdded } from "../../../../domain/project-knowledge/audiences/add/AudienceAddedEvent.js";
+import { AudienceAddedEvent } from "../../../../domain/project-knowledge/audiences/add/AudienceAddedEvent.js";
 import { IAudienceAddedProjector } from "./IAudienceAddedProjector.js";
 
 /**
- * Event handler for AudienceAdded event.
+ * Event handler for AudienceAddedEvent event.
  *
  * Application layer handler that orchestrates projection updates
- * when a new audience is added. Subscribes to AudienceAdded via event bus.
+ * when a new audience is added. Subscribes to AudienceAddedEvent via event bus.
  */
 export class AudienceAddedEventHandler implements IEventHandler {
   constructor(private readonly projector: IAudienceAddedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const audienceAddedEvent = event as AudienceAdded;
+    const audienceAddedEvent = event as AudienceAddedEvent;
     await this.projector.applyAudienceAdded(audienceAddedEvent);
   }
 }

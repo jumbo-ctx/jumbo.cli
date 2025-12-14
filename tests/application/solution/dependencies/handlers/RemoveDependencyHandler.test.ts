@@ -8,7 +8,7 @@ import { IDependencyRemovedEventWriter } from "../../../../../src/application/so
 import { IDependencyRemovedEventReader } from "../../../../../src/application/solution/dependencies/remove/IDependencyRemovedEventReader";
 import { IDependencyRemoveReader } from "../../../../../src/application/solution/dependencies/remove/IDependencyRemoveReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { DependencyAdded } from "../../../../../src/domain/solution/dependencies/EventIndex";
+import { DependencyAddedEvent } from "../../../../../src/domain/solution/dependencies/EventIndex";
 import { DependencyEventType, DependencyStatus } from "../../../../../src/domain/solution/dependencies/Constants";
 import { DependencyView } from "../../../../../src/application/solution/dependencies/DependencyView";
 
@@ -60,7 +60,7 @@ describe("RemoveDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_123",
       version: 1,
@@ -123,7 +123,7 @@ describe("RemoveDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_456",
       version: 1,

@@ -6,8 +6,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface DecisionUpdated extends BaseEvent {
-  readonly type: "DecisionUpdated";
+export interface DecisionUpdatedEvent extends BaseEvent {
+  readonly type: "DecisionUpdatedEvent";
   readonly payload: {
     readonly title?: string;
     readonly context?: string;

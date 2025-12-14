@@ -296,7 +296,7 @@ describe("Component Aggregate", () => {
       const event = component.deprecate("Updated deprecation reason");
 
       // Assert
-      expect(event.type).toBe("ComponentDeprecated");
+      expect(event.type).toBe(ComponentEventType.DEPRECATED);
       expect(event.payload.reason).toBe("Updated deprecation reason");
       expect(event.payload.status).toBe("deprecated");
     });

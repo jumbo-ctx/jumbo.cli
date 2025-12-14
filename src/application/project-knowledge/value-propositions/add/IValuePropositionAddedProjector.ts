@@ -1,13 +1,13 @@
 /**
- * Port interface for projecting ValuePropositionAdded events.
+ * Port interface for projecting ValuePropositionAddedEvent events.
  * Infrastructure layer will implement this.
  */
 
-import { ValuePropositionAdded } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
+import { ValuePropositionAddedEvent } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
 
 export interface IValuePropositionAddedProjector {
   /**
-   * Applies a ValuePropositionAdded event to update the materialized view.
+   * Applies a ValuePropositionAddedEvent event to update the materialized view.
    */
-  applyValuePropositionAdded(event: ValuePropositionAdded): Promise<void>;
+  applyValuePropositionAdded(event: ValuePropositionAddedEvent): Promise<void>;
 }

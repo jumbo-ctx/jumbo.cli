@@ -1,5 +1,5 @@
-import { ComponentAdded } from "../../../../domain/solution/components/add/ComponentAddedEvent.js";
+import { ComponentAddedEvent } from "../../../../domain/solution/components/add/ComponentAddedEvent.js";
 
 export interface IComponentAddedProjector {
-  applyComponentAdded(event: ComponentAdded): Promise<void>;
+  applyComponentAdded(event: ComponentAddedEvent): Promise<void>;
 }

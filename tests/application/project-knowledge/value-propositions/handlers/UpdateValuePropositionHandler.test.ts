@@ -7,8 +7,8 @@ import { UpdateValuePropositionCommand } from "../../../../../src/application/pr
 import { IValuePropositionUpdatedEventWriter } from "../../../../../src/application/project-knowledge/value-propositions/update/IValuePropositionUpdatedEventWriter.js";
 import { IValuePropositionUpdateReader } from "../../../../../src/application/project-knowledge/value-propositions/update/IValuePropositionUpdateReader.js";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus.js";
-import { ValuePropositionAdded } from "../../../../../src/domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
-import { ValuePropositionUpdated } from "../../../../../src/domain/project-knowledge/value-propositions/update/ValuePropositionUpdatedEvent.js";
+import { ValuePropositionAddedEvent } from "../../../../../src/domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
+import { ValuePropositionUpdatedEvent } from "../../../../../src/domain/project-knowledge/value-propositions/update/ValuePropositionUpdatedEvent.js";
 import { ValuePropositionEventType } from "../../../../../src/domain/project-knowledge/value-propositions/Constants.js";
 import { ValuePropositionView } from "../../../../../src/application/project-knowledge/value-propositions/ValuePropositionView.js";
 
@@ -20,7 +20,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
   // Test data
   const valueId = "value_test123";
-  const addedEvent: ValuePropositionAdded = {
+  const addedEvent: ValuePropositionAddedEvent = {
     type: ValuePropositionEventType.ADDED,
     aggregateId: valueId,
     version: 1,
@@ -90,7 +90,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Verify event structure
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.type).toBe(ValuePropositionEventType.UPDATED);
       expect(appendCall.aggregateId).toBe(valueId);
       expect(appendCall.version).toBe(2);
@@ -115,7 +115,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Verify event structure
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.type).toBe(ValuePropositionEventType.UPDATED);
       expect(appendCall.payload.title).toBeUndefined();
       expect(appendCall.payload.description).toBe("Updated description");
@@ -134,7 +134,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.payload.benefit).toBe("Updated benefit");
       expect(appendCall.payload.title).toBeUndefined();
       expect(appendCall.payload.description).toBeUndefined();
@@ -157,7 +157,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Verify event contains all fields
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.payload.title).toBe("New title");
       expect(appendCall.payload.description).toBe("New description");
       expect(appendCall.payload.benefit).toBe("New benefit");
@@ -175,7 +175,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.payload.measurableOutcome).toBe("Zero context loss");
     });
 
@@ -191,7 +191,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.payload.measurableOutcome).toBe(null);
     });
 
@@ -391,13 +391,13 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.version).toBe(2); // First version is 1, update is 2
     });
 
     it("should handle multiple updates with correct versioning", async () => {
       // Arrange - simulate two previous events
-      const secondEvent: ValuePropositionUpdated = {
+      const secondEvent: ValuePropositionUpdatedEvent = {
         type: ValuePropositionEventType.UPDATED,
         aggregateId: valueId,
         version: 2,
@@ -421,7 +421,7 @@ describe("UpdateValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionUpdated;
+        .calls[0][0] as ValuePropositionUpdatedEvent;
       expect(appendCall.version).toBe(3);
     });
   });

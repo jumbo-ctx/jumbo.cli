@@ -5,14 +5,14 @@
 import { Database } from "better-sqlite3";
 import { IInvariantAddedProjector } from "../../../../application/solution/invariants/add/IInvariantAddedProjector.js";
 import { IInvariantAddReader } from "../../../../application/solution/invariants/add/IInvariantAddReader.js";
-import { InvariantAdded } from "../../../../domain/solution/invariants/add/InvariantAddedEvent.js";
+import { InvariantAddedEvent } from "../../../../domain/solution/invariants/add/InvariantAddedEvent.js";
 import { InvariantView } from "../../../../application/solution/invariants/InvariantView.js";
 import { UUID } from "../../../../domain/shared/BaseEvent.js";
 
 export class SqliteInvariantAddedProjector implements IInvariantAddedProjector, IInvariantAddReader {
   constructor(private db: Database) {}
 
-  async applyInvariantAdded(event: InvariantAdded): Promise<void> {
+  async applyInvariantAdded(event: InvariantAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO invariant_views (
         invariantId, title, description, rationale, enforcement,

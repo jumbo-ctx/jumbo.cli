@@ -7,8 +7,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface DependencyAdded extends BaseEvent {
-  readonly type: "DependencyAdded";
+export interface DependencyAddedEvent extends BaseEvent {
+  readonly type: "DependencyAddedEvent";
   readonly payload: {
     readonly consumerId: string;
     readonly providerId: string;

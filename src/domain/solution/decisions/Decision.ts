@@ -1,7 +1,7 @@
 import { BaseAggregate, AggregateState } from "../../shared/BaseAggregate.js";
 import { UUID, ISO8601 } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { DecisionEvent, DecisionAdded, DecisionUpdated, DecisionReversed, DecisionSuperseded } from "./EventIndex.js";
+import { DecisionEvent, DecisionAddedEvent, DecisionUpdatedEvent, DecisionReversedEvent, DecisionSupersededEvent } from "./EventIndex.js";
 import { DecisionEventType, DecisionStatus, DecisionStatusType, DecisionErrorMessages } from "./Constants.js";
 import { TITLE_RULES } from "./rules/TitleRules.js";
 import { CONTEXT_RULES } from "./rules/ContextRules.js";
@@ -38,7 +38,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
   static apply(state: DecisionState, event: DecisionEvent): void {
     switch (event.type) {
       case DecisionEventType.ADDED: {
-        const e = event as DecisionAdded;
+        const e = event as DecisionAddedEvent;
         state.title = e.payload.title;
         state.context = e.payload.context;
         state.rationale = e.payload.rationale;
@@ -49,7 +49,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         break;
       }
       case DecisionEventType.UPDATED: {
-        const e = event as DecisionUpdated;
+        const e = event as DecisionUpdatedEvent;
         if (e.payload.title !== undefined) state.title = e.payload.title;
         if (e.payload.context !== undefined) state.context = e.payload.context;
         if (e.payload.rationale !== undefined) state.rationale = e.payload.rationale;
@@ -59,7 +59,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         break;
       }
       case DecisionEventType.REVERSED: {
-        const e = event as DecisionReversed;
+        const e = event as DecisionReversedEvent;
         state.status = DecisionStatus.REVERSED;
         state.reversalReason = e.payload.reason;
         state.reversedAt = e.payload.reversedAt;
@@ -67,7 +67,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         break;
       }
       case DecisionEventType.SUPERSEDED: {
-        const e = event as DecisionSuperseded;
+        const e = event as DecisionSupersededEvent;
         state.status = DecisionStatus.SUPERSEDED;
         state.supersededBy = e.payload.supersededBy;
         state.version = e.version;
@@ -129,7 +129,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
     rationale?: string,
     alternatives?: string[],
     consequences?: string
-  ): DecisionAdded {
+  ): DecisionAddedEvent {
     // State validation: must be new aggregate
     if (this.state.version > 0) {
       throw new Error('Decision already exists. Use update() instead.');
@@ -153,7 +153,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         consequences: consequences || null
       },
       Decision.apply
-    ) as DecisionAdded;
+    ) as DecisionAddedEvent;
   }
 
   /**
@@ -166,7 +166,7 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
     rationale?: string,
     alternatives?: string[],
     consequences?: string
-  ): DecisionUpdated {
+  ): DecisionUpdatedEvent {
     // State validation
     if (this.state.status !== DecisionStatus.ACTIVE) {
       throw new Error(DecisionErrorMessages.CANNOT_MODIFY_INACTIVE);
@@ -189,14 +189,14 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         consequences
       },
       Decision.apply
-    ) as DecisionUpdated;
+    ) as DecisionUpdatedEvent;
   }
 
   /**
    * Reverse a decision.
    * Marks the decision as no longer applicable.
    */
-  reverse(reason: string): DecisionReversed {
+  reverse(reason: string): DecisionReversedEvent {
     // State validation - can only reverse active decisions
     if (this.state.status === DecisionStatus.REVERSED) {
       throw new Error(DecisionErrorMessages.ALREADY_REVERSED);
@@ -216,13 +216,13 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
         reversedAt: new Date().toISOString() as ISO8601
       },
       Decision.apply
-    ) as DecisionReversed;
+    ) as DecisionReversedEvent;
   }
 
   /**
    * Mark decision as superseded by a newer decision.
    */
-  supersede(supersededBy: UUID): DecisionSuperseded {
+  supersede(supersededBy: UUID): DecisionSupersededEvent {
     // State validation
     if (this.state.status === DecisionStatus.SUPERSEDED) {
       throw new Error(DecisionErrorMessages.ALREADY_SUPERSEDED);
@@ -238,6 +238,6 @@ export class Decision extends BaseAggregate<DecisionState, DecisionEvent> {
       DecisionEventType.SUPERSEDED,
       { supersededBy },
       Decision.apply
-    ) as DecisionSuperseded;
+    ) as DecisionSupersededEvent;
   }
 }

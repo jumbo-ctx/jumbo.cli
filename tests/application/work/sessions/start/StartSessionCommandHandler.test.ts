@@ -76,7 +76,7 @@ describe("StartSessionCommandHandler", () => {
 
     // Assert
     expect(eventWriter.events).toHaveLength(1);
-    expect(eventWriter.events[0].type).toBe("SessionStarted");
+    expect(eventWriter.events[0].type).toBe("SessionStartedEvent");
     const event = eventWriter.events[0] as any;
     expect(event.payload).toEqual({});
   });
@@ -90,6 +90,6 @@ describe("StartSessionCommandHandler", () => {
 
     // Assert
     expect(eventBus.publishedEvents).toHaveLength(1);
-    expect(eventBus.publishedEvents[0].type).toBe("SessionStarted");
+    expect(eventBus.publishedEvents[0].type).toBe("SessionStartedEvent");
   });
 });

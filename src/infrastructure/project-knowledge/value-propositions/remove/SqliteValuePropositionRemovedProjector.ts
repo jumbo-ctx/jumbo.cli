@@ -1,5 +1,5 @@
 /**
- * SqliteValuePropositionRemovedProjector - SQLite projector for ValuePropositionRemoved event.
+ * SqliteValuePropositionRemovedProjector - SQLite projector for ValuePropositionRemovedEvent event.
  *
  * Implements IValuePropositionRemovedProjector and IValuePropositionRemoveReader for projecting
  * value proposition remove events to the SQLite read model.
@@ -8,7 +8,7 @@
 import { Database } from "better-sqlite3";
 import { IValuePropositionRemovedProjector } from "../../../../application/project-knowledge/value-propositions/remove/IValuePropositionRemovedProjector.js";
 import { IValuePropositionRemoveReader } from "../../../../application/project-knowledge/value-propositions/remove/IValuePropositionRemoveReader.js";
-import { ValuePropositionRemoved } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionRemovedEvent } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
 import { ValuePropositionView } from "../../../../application/project-knowledge/value-propositions/ValuePropositionView.js";
 
 export class SqliteValuePropositionRemovedProjector
@@ -16,7 +16,7 @@ export class SqliteValuePropositionRemovedProjector
 {
   constructor(private db: Database) {}
 
-  async applyValuePropositionRemoved(event: ValuePropositionRemoved): Promise<void> {
+  async applyValuePropositionRemoved(event: ValuePropositionRemovedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       DELETE FROM value_proposition_views WHERE valuePropositionId = ?
     `);

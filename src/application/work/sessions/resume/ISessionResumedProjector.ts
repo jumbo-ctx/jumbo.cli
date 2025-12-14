@@ -1,9 +1,9 @@
-import { SessionResumed } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
+import { SessionResumedEvent } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
 
 /**
- * Port interface for projecting SessionResumed event to the read model.
+ * Port interface for projecting SessionResumedEvent event to the read model.
  * Used by SessionResumedEventHandler to update the projection store.
  */
 export interface ISessionResumedProjector {
-  applySessionResumed(event: SessionResumed): Promise<void>;
+  applySessionResumed(event: SessionResumedEvent): Promise<void>;
 }

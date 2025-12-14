@@ -1,17 +1,17 @@
 /**
- * Port interface for writing ValuePropositionRemoved events.
+ * Port interface for writing ValuePropositionRemovedEvent events.
  * Infrastructure layer will implement this with FsEventStore.
  */
 
-import { ValuePropositionRemoved } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionRemovedEvent } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
 import { AppendResult } from "../../../shared/persistence/IEventStore.js";
 
 export interface IValuePropositionRemovedEventWriter {
   /**
-   * Appends a ValuePropositionRemoved event to the event store.
+   * Appends a ValuePropositionRemovedEvent event to the event store.
    */
-  append(event: ValuePropositionRemoved): Promise<AppendResult>;
+  append(event: ValuePropositionRemovedEvent): Promise<AppendResult>;
 
   /**
    * Reads all events for a value proposition aggregate.

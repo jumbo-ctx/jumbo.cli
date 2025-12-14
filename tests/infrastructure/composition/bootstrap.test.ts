@@ -158,7 +158,7 @@ describe("bootstrap", () => {
 
     // Create a test session event
     const sessionStartedEvent = {
-      type: "SessionStarted",
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       timestamp: new Date().toISOString(),
       version: 1,
@@ -172,7 +172,7 @@ describe("bootstrap", () => {
     // Verify event was persisted
     const events = await container.eventStore.getAllEvents();
     expect(events).toHaveLength(1);
-    expect(events[0].type).toBe("SessionStarted");
+    expect(events[0].type).toBe("SessionStartedEvent");
     expect(events[0].aggregateId).toBe("session_123");
 
     // Verify event was handled by projection handler (session should be findable via active reader)
@@ -239,7 +239,7 @@ describe("bootstrap", () => {
 
     // Start a session
     const sessionEvent = {
-      type: "SessionStarted",
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       timestamp: new Date().toISOString(),
       version: 1,

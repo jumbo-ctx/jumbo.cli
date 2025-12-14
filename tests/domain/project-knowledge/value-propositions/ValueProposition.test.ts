@@ -5,9 +5,9 @@
 import { ValueProposition } from "../../../../src/domain/project-knowledge/value-propositions/ValueProposition";
 import { ValuePropositionEventType } from "../../../../src/domain/project-knowledge/value-propositions/Constants";
 import {
-  ValuePropositionAdded,
-  ValuePropositionUpdated,
-  ValuePropositionRemoved,
+  ValuePropositionAddedEvent,
+  ValuePropositionUpdatedEvent,
+  ValuePropositionRemovedEvent,
 } from "../../../../src/domain/project-knowledge/value-propositions/EventIndex";
 
 describe("ValueProposition Aggregate", () => {
@@ -146,7 +146,7 @@ describe("ValueProposition Aggregate", () => {
         undefined,
         undefined,
         undefined
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(ValuePropositionEventType.UPDATED);
@@ -174,7 +174,7 @@ describe("ValueProposition Aggregate", () => {
         "Updated description",
         undefined,
         undefined
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(ValuePropositionEventType.UPDATED);
@@ -200,7 +200,7 @@ describe("ValueProposition Aggregate", () => {
         undefined,
         "Updated benefit",
         undefined
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(ValuePropositionEventType.UPDATED);
@@ -226,7 +226,7 @@ describe("ValueProposition Aggregate", () => {
         "New description",
         "New benefit",
         undefined
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.payload.title).toBe("New title");
@@ -250,7 +250,7 @@ describe("ValueProposition Aggregate", () => {
         undefined,
         undefined,
         "Zero context loss"
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.payload.measurableOutcome).toBe("Zero context loss");
@@ -272,7 +272,7 @@ describe("ValueProposition Aggregate", () => {
         undefined,
         undefined,
         null
-      ) as ValuePropositionUpdated;
+      ) as ValuePropositionUpdatedEvent;
 
       // Assert
       expect(event.payload.measurableOutcome).toBe(null);

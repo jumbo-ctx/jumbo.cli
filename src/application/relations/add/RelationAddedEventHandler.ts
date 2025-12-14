@@ -1,19 +1,19 @@
 import { IEventHandler } from "../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../domain/shared/BaseEvent.js";
-import { RelationAdded } from "../../../domain/relations/add/RelationAddedEvent.js";
+import { RelationAddedEvent } from "../../../domain/relations/add/RelationAddedEvent.js";
 import { IRelationAddedProjector } from "./IRelationAddedProjector.js";
 
 /**
- * Event handler for RelationAdded event.
+ * Event handler for RelationAddedEvent event.
  *
  * Application layer handler that orchestrates projection updates
- * when a relation is added. Subscribes to RelationAdded via event bus.
+ * when a relation is added. Subscribes to RelationAddedEvent via event bus.
  */
 export class RelationAddedEventHandler implements IEventHandler {
   constructor(private readonly projector: IRelationAddedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const relationAddedEvent = event as RelationAdded;
+    const relationAddedEvent = event as RelationAddedEvent;
     await this.projector.applyRelationAdded(relationAddedEvent);
   }
 }

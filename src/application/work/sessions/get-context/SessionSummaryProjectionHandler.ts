@@ -2,13 +2,13 @@ import { IEventBus } from "../../../shared/messaging/IEventBus.js";
 import { ISessionSummaryProjectionStore } from "./ISessionSummaryProjectionStore.js";
 import { IGoalReadForSessionSummary } from "./IGoalReadForSessionSummary.js";
 import { IDecisionSessionReader } from "./IDecisionSessionReader.js";
-import { SessionStarted } from "../../../../domain/work/sessions/start/SessionStartedEvent.js";
-import { SessionEnded } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
-import { SessionPaused } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
-import { SessionResumed } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
+import { SessionStartedEvent } from "../../../../domain/work/sessions/start/SessionStartedEvent.js";
+import { SessionEndedEvent } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
+import { SessionPausedEvent } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
+import { SessionResumedEvent } from "../../../../domain/work/sessions/resume/SessionResumedEvent.js";
 import { GoalCompletedEvent } from "../../../../domain/work/goals/complete/GoalCompletedEvent.js";
 import { GoalBlockedEvent } from "../../../../domain/work/goals/block/GoalBlockedEvent.js";
-import { DecisionAdded } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
+import { DecisionAddedEvent } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
 
 /**
@@ -47,19 +47,19 @@ export class SessionSummaryProjectionHandler {
   subscribe(): void {
     // Session events
     this.eventBus.subscribe(
-      "SessionStarted",
+      "SessionStartedEvent",
       { handle: this.handleSessionStarted.bind(this) }
     );
     this.eventBus.subscribe(
-      "SessionEnded",
+      "SessionEndedEvent",
       { handle: this.handleSessionEnded.bind(this) }
     );
     this.eventBus.subscribe(
-      "SessionPaused",
+      "SessionPausedEvent",
       { handle: this.handleSessionPaused.bind(this) }
     );
     this.eventBus.subscribe(
-      "SessionResumed",
+      "SessionResumedEvent",
       { handle: this.handleSessionResumed.bind(this) }
     );
 
@@ -75,7 +75,7 @@ export class SessionSummaryProjectionHandler {
 
     // Decision events (cross-aggregate)
     this.eventBus.subscribe(
-      "DecisionAdded",
+      "DecisionAddedEvent",
       { handle: this.handleDecisionAdded.bind(this) }
     );
   }
@@ -88,7 +88,7 @@ export class SessionSummaryProjectionHandler {
    * - Create/overwrite LATEST with new session seed (empty arrays)
    */
   private async handleSessionStarted(event: BaseEvent): Promise<void> {
-    const sessionStartedEvent = event as SessionStarted;
+    const sessionStartedEvent = event as SessionStartedEvent;
 
     // Archive existing LATEST if it exists and is ended
     await this.store.archiveLatest();
@@ -114,7 +114,7 @@ export class SessionSummaryProjectionHandler {
    * Clone to permanent ID happens on next SessionStarted (lazy archival)
    */
   private async handleSessionEnded(event: BaseEvent): Promise<void> {
-    const sessionEndedEvent = event as SessionEnded;
+    const sessionEndedEvent = event as SessionEndedEvent;
 
     await this.store.update("LATEST", {
       status: "ended",
@@ -126,7 +126,7 @@ export class SessionSummaryProjectionHandler {
    * SessionPaused → Update LATEST status
    */
   private async handleSessionPaused(event: BaseEvent): Promise<void> {
-    const sessionPausedEvent = event as SessionPaused;
+    const sessionPausedEvent = event as SessionPausedEvent;
 
     await this.store.update("LATEST", {
       status: "paused",
@@ -138,7 +138,7 @@ export class SessionSummaryProjectionHandler {
    * SessionResumed → Update LATEST status
    */
   private async handleSessionResumed(event: BaseEvent): Promise<void> {
-    const sessionResumedEvent = event as SessionResumed;
+    const sessionResumedEvent = event as SessionResumedEvent;
 
     await this.store.update("LATEST", {
       status: "active",
@@ -228,7 +228,7 @@ export class SessionSummaryProjectionHandler {
    * - Append to session summary
    */
   private async handleDecisionAdded(event: BaseEvent): Promise<void> {
-    const decisionAddedEvent = event as DecisionAdded;
+    const decisionAddedEvent = event as DecisionAddedEvent;
 
     // Defensive check: Only update if LATEST exists and is active
     const latestSessionSummary = await this.store.findLatest();

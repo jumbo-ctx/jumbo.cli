@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { DependencyAdded } from "../../../../domain/solution/dependencies/add/DependencyAddedEvent.js";
+import { DependencyAddedEvent } from "../../../../domain/solution/dependencies/add/DependencyAddedEvent.js";
 import { IDependencyAddedProjector } from "./IDependencyAddedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class DependencyAddedEventHandler implements IEventHandler {
   constructor(private readonly projector: IDependencyAddedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const dependencyAddedEvent = event as DependencyAdded;
+    const dependencyAddedEvent = event as DependencyAddedEvent;
     await this.projector.applyDependencyAdded(dependencyAddedEvent);
   }
 }

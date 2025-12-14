@@ -6,8 +6,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface AudienceRemoved extends BaseEvent {
-  readonly type: "AudienceRemoved";
+export interface AudienceRemovedEvent extends BaseEvent {
+  readonly type: "AudienceRemovedEvent";
   readonly payload: {
     readonly name: string; // Captured for event history
     readonly removedReason?: string; // Optional: why it was removed

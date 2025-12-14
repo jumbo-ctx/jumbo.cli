@@ -5,9 +5,9 @@
 
 // Guideline event types
 export const GuidelineEventType = {
-  ADDED: "GuidelineAdded",
-  UPDATED: "GuidelineUpdated",
-  REMOVED: "GuidelineRemoved",
+  ADDED: "GuidelineAddedEvent",
+  UPDATED: "GuidelineUpdatedEvent",
+  REMOVED: "GuidelineRemovedEvent",
 } as const;
 
 export type GuidelineEventTypeValue =

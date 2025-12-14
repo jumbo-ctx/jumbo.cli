@@ -5,8 +5,8 @@
 import { Audience } from "../../../../src/domain/project-knowledge/audiences/Audience";
 import { AudienceEventType } from "../../../../src/domain/project-knowledge/audiences/Constants";
 import {
-  AudienceAdded,
-  AudienceUpdated,
+  AudienceAddedEvent,
+  AudienceUpdatedEvent,
 } from "../../../../src/domain/project-knowledge/audiences/EventIndex";
 
 describe("Audience Aggregate", () => {
@@ -129,7 +129,7 @@ describe("Audience Aggregate", () => {
       audience.add("Software Developers", "Professional developers", "primary");
 
       // Act
-      const event = audience.update("Updated Name", undefined, undefined) as AudienceUpdated;
+      const event = audience.update("Updated Name", undefined, undefined) as AudienceUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(AudienceEventType.UPDATED);
@@ -151,7 +151,7 @@ describe("Audience Aggregate", () => {
         "Updated Name",
         "Updated description",
         "secondary"
-      ) as AudienceUpdated;
+      ) as AudienceUpdatedEvent;
 
       // Assert
       expect(event.payload.name).toBe("Updated Name");

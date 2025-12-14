@@ -8,8 +8,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { DependencyStatusType } from "../Constants.js";
 
-export interface DependencyUpdated extends BaseEvent {
-  readonly type: "DependencyUpdated";
+export interface DependencyUpdatedEvent extends BaseEvent {
+  readonly type: "DependencyUpdatedEvent";
   readonly payload: {
     readonly endpoint?: string | null;
     readonly contract?: string | null;

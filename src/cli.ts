@@ -25,9 +25,9 @@ import { CommanderApplicator } from "./presentation/cli/shared/registry/Commande
 import { Renderer } from "./presentation/cli/shared/rendering/Renderer.js";
 import { OutputFormat, VerbosityLevel } from "./presentation/cli/shared/rendering/types.js";
 import { formatCategorizedCommands } from "./presentation/cli/shared/help/CategoryFormatter.js";
-import { shouldShowAnimatedBanner, isFirstTimeUser } from "./presentation/cli/shared/utils/UserDetection.js";
+import { shouldShowAnimatedBanner, isFirstTimeUser } from "./presentation/cli/shared/components/UserDetection.js";
 import { bootstrap, ApplicationContainer } from "./infrastructure/composition/bootstrap.js";
-import { generateBannerContent, BannerTrigger, BannerDisplayContext } from "./presentation/cli/shared/utils/BannerContentGenerator.js";
+import { generateBannerContent, BannerTrigger, BannerDisplayContext } from "./presentation/cli/shared/components/BannerContentGenerator.js";
 import { GetProjectSummaryQueryHandler } from "./application/project-knowledge/project/query/GetProjectSummaryQueryHandler.js";
 import { GetWorkSummaryQueryHandler } from "./application/work/query/GetWorkSummaryQueryHandler.js";
 import { BuildTimeCliMetadataReader } from "./infrastructure/cli-metadata/query/BuildTimeCliMetadataReader.js";

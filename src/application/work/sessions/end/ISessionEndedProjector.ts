@@ -1,9 +1,9 @@
-import { SessionEnded } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
+import { SessionEndedEvent } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
 
 /**
- * Port interface for projecting SessionEnded event to the read model.
+ * Port interface for projecting SessionEndedEvent event to the read model.
  * Used by SessionEndedEventHandler to update the projection store.
  */
 export interface ISessionEndedProjector {
-  applySessionEnded(event: SessionEnded): Promise<void>;
+  applySessionEnded(event: SessionEndedEvent): Promise<void>;
 }

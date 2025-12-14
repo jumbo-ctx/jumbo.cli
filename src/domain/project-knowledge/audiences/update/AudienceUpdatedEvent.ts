@@ -7,8 +7,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { AudiencePriorityType } from "../Constants.js";
 
-export interface AudienceUpdated extends BaseEvent {
-  readonly type: "AudienceUpdated";
+export interface AudienceUpdatedEvent extends BaseEvent {
+  readonly type: "AudienceUpdatedEvent";
   readonly payload: {
     readonly name?: string;
     readonly description?: string;

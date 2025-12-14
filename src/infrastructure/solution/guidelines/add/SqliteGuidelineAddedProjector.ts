@@ -4,14 +4,14 @@
 
 import { Database } from "better-sqlite3";
 import { IGuidelineAddedProjector } from "../../../../application/solution/guidelines/add/IGuidelineAddedProjector.js";
-import { GuidelineAdded } from "../../../../domain/solution/guidelines/add/GuidelineAddedEvent.js";
+import { GuidelineAddedEvent } from "../../../../domain/solution/guidelines/add/GuidelineAddedEvent.js";
 import { GuidelineView } from "../../../../application/solution/guidelines/GuidelineView.js";
 import { GuidelineCategoryValue } from "../../../../domain/solution/guidelines/Constants.js";
 
 export class SqliteGuidelineAddedProjector implements IGuidelineAddedProjector {
   constructor(private db: Database) {}
 
-  async applyGuidelineAdded(event: GuidelineAdded): Promise<void> {
+  async applyGuidelineAdded(event: GuidelineAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO guideline_views (
         guidelineId, category, title, description, rationale,

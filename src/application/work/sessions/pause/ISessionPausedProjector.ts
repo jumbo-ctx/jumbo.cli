@@ -1,9 +1,9 @@
-import { SessionPaused } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
+import { SessionPausedEvent } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
 
 /**
- * Port interface for projecting SessionPaused event to the read model.
+ * Port interface for projecting SessionPausedEvent event to the read model.
  * Used by SessionPausedEventHandler to update the projection store.
  */
 export interface ISessionPausedProjector {
-  applySessionPaused(event: SessionPaused): Promise<void>;
+  applySessionPaused(event: SessionPausedEvent): Promise<void>;
 }

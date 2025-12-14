@@ -7,8 +7,8 @@ import { UpdateAudiencePainCommand } from "../../../../../src/application/projec
 import { IAudiencePainUpdatedEventWriter } from "../../../../../src/application/project-knowledge/audience-pains/update/IAudiencePainUpdatedEventWriter.js";
 import { IAudiencePainUpdateReader } from "../../../../../src/application/project-knowledge/audience-pains/update/IAudiencePainUpdateReader.js";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus.js";
-import { AudiencePainAdded } from "../../../../../src/domain/project-knowledge/audience-pains/add/AudiencePainAddedEvent.js";
-import { AudiencePainUpdated } from "../../../../../src/domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
+import { AudiencePainAddedEvent } from "../../../../../src/domain/project-knowledge/audience-pains/add/AudiencePainAddedEvent.js";
+import { AudiencePainUpdatedEvent } from "../../../../../src/domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
 import { AudiencePainEventType } from "../../../../../src/domain/project-knowledge/audience-pains/Constants.js";
 import { AudiencePainView } from "../../../../../src/application/project-knowledge/audience-pains/AudiencePainView.js";
 
@@ -20,7 +20,7 @@ describe("UpdateAudiencePainCommandHandler", () => {
 
   // Test data
   const painId = "pain_test123";
-  const addedEvent: AudiencePainAdded = {
+  const addedEvent: AudiencePainAddedEvent = {
     type: AudiencePainEventType.ADDED,
     aggregateId: painId,
     version: 1,
@@ -83,7 +83,7 @@ describe("UpdateAudiencePainCommandHandler", () => {
       expect(eventBus.publish).toHaveBeenCalledTimes(1);
 
       // Verify event structure
-      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdated;
+      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdatedEvent;
       expect(appendCall.type).toBe(AudiencePainEventType.UPDATED);
       expect(appendCall.aggregateId).toBe(painId);
       expect(appendCall.version).toBe(2);
@@ -105,7 +105,7 @@ describe("UpdateAudiencePainCommandHandler", () => {
       expect(result.painId).toBe(painId);
 
       // Verify event structure
-      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdated;
+      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdatedEvent;
       expect(appendCall.type).toBe(AudiencePainEventType.UPDATED);
       expect(appendCall.payload.title).toBeUndefined();
       expect(appendCall.payload.description).toBe(
@@ -128,7 +128,7 @@ describe("UpdateAudiencePainCommandHandler", () => {
       expect(result.painId).toBe(painId);
 
       // Verify event contains both fields
-      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdated;
+      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdatedEvent;
       expect(appendCall.payload.title).toBe("Updated Title");
       expect(appendCall.payload.description).toBe("Updated description");
     });
@@ -283,13 +283,13 @@ describe("UpdateAudiencePainCommandHandler", () => {
       await handler.execute(command);
 
       // Assert
-      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdated;
+      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdatedEvent;
       expect(appendCall.version).toBe(2); // First version is 1, update is 2
     });
 
     it("should handle multiple updates with correct versioning", async () => {
       // Arrange - simulate two previous events
-      const secondEvent: AudiencePainUpdated = {
+      const secondEvent: AudiencePainUpdatedEvent = {
         type: AudiencePainEventType.UPDATED,
         aggregateId: painId,
         version: 2,
@@ -309,7 +309,7 @@ describe("UpdateAudiencePainCommandHandler", () => {
       await handler.execute(command);
 
       // Assert
-      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdated;
+      const appendCall = (eventWriter.append as jest.Mock).mock.calls[0][0] as AudiencePainUpdatedEvent;
       expect(appendCall.version).toBe(3);
     });
   });

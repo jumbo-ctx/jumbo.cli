@@ -1,5 +1,5 @@
 /**
- * SqliteAudienceAddedProjector - SQLite projector for AudienceAdded event.
+ * SqliteAudienceAddedProjector - SQLite projector for AudienceAddedEvent event.
  *
  * Implements IAudienceAddedProjector for projecting audience add events
  * to the SQLite read model.
@@ -7,12 +7,12 @@
 
 import { Database } from "better-sqlite3";
 import { IAudienceAddedProjector } from "../../../../application/project-knowledge/audiences/add/IAudienceAddedProjector.js";
-import { AudienceAdded } from "../../../../domain/project-knowledge/audiences/add/AudienceAddedEvent.js";
+import { AudienceAddedEvent } from "../../../../domain/project-knowledge/audiences/add/AudienceAddedEvent.js";
 
 export class SqliteAudienceAddedProjector implements IAudienceAddedProjector {
   constructor(private db: Database) {}
 
-  async applyAudienceAdded(event: AudienceAdded): Promise<void> {
+  async applyAudienceAdded(event: AudienceAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO audience_views (
         audienceId, name, description, priority, isRemoved,

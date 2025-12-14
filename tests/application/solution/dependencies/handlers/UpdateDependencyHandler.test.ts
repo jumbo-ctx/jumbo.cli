@@ -8,7 +8,7 @@ import { IDependencyUpdatedEventWriter } from "../../../../../src/application/so
 import { IDependencyUpdatedEventReader } from "../../../../../src/application/solution/dependencies/update/IDependencyUpdatedEventReader";
 import { IDependencyUpdateReader } from "../../../../../src/application/solution/dependencies/update/IDependencyUpdateReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { DependencyAdded } from "../../../../../src/domain/solution/dependencies/EventIndex";
+import { DependencyAddedEvent } from "../../../../../src/domain/solution/dependencies/EventIndex";
 import { DependencyEventType, DependencyStatus } from "../../../../../src/domain/solution/dependencies/Constants";
 import { DependencyView } from "../../../../../src/application/solution/dependencies/DependencyView";
 
@@ -60,7 +60,7 @@ describe("UpdateDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_123",
       version: 1,
@@ -126,7 +126,7 @@ describe("UpdateDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_456",
       version: 1,
@@ -173,7 +173,7 @@ describe("UpdateDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_789",
       version: 1,
@@ -241,7 +241,7 @@ describe("UpdateDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_999",
       version: 1,
@@ -284,7 +284,7 @@ describe("UpdateDependencyCommandHandler", () => {
       removalReason: null,
     };
 
-    const addedEvent: DependencyAdded = {
+    const addedEvent: DependencyAddedEvent = {
       type: DependencyEventType.ADDED,
       aggregateId: "dep_clear",
       version: 1,

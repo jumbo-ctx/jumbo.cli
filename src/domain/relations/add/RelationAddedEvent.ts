@@ -5,8 +5,8 @@ import { EntityTypeValue, RelationStrengthValue } from "../Constants.js";
  * Emitted when a relation between two entities is added to the knowledge graph.
  * This is the first (and only lifecycle) event for the Relation aggregate.
  */
-export interface RelationAdded extends BaseEvent {
-  readonly type: "RelationAdded";
+export interface RelationAddedEvent extends BaseEvent {
+  readonly type: "RelationAddedEvent";
   readonly payload: {
     readonly fromEntityType: EntityTypeValue;
     readonly fromEntityId: string;

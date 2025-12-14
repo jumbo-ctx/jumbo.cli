@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { DependencyRemoved } from "../../../../domain/solution/dependencies/remove/DependencyRemovedEvent.js";
+import { DependencyRemovedEvent } from "../../../../domain/solution/dependencies/remove/DependencyRemovedEvent.js";
 import { IDependencyRemovedProjector } from "./IDependencyRemovedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class DependencyRemovedEventHandler implements IEventHandler {
   constructor(private readonly projector: IDependencyRemovedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const dependencyRemovedEvent = event as DependencyRemoved;
+    const dependencyRemovedEvent = event as DependencyRemovedEvent;
     await this.projector.applyDependencyRemoved(dependencyRemovedEvent);
   }
 }

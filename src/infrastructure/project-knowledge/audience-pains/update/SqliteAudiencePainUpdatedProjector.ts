@@ -1,5 +1,5 @@
 /**
- * SqliteAudiencePainUpdatedProjector - SQLite projector for AudiencePainUpdated event.
+ * SqliteAudiencePainUpdatedProjector - SQLite projector for AudiencePainUpdatedEvent event.
  *
  * Implements IAudiencePainUpdatedProjector and IAudiencePainUpdateReader for projecting
  * audience pain update events to the SQLite read model.
@@ -8,7 +8,7 @@
 import { Database } from "better-sqlite3";
 import { IAudiencePainUpdatedProjector } from "../../../../application/project-knowledge/audience-pains/update/IAudiencePainUpdatedProjector.js";
 import { IAudiencePainUpdateReader } from "../../../../application/project-knowledge/audience-pains/update/IAudiencePainUpdateReader.js";
-import { AudiencePainUpdated } from "../../../../domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
+import { AudiencePainUpdatedEvent } from "../../../../domain/project-knowledge/audience-pains/update/AudiencePainUpdatedEvent.js";
 import { AudiencePainView } from "../../../../application/project-knowledge/audience-pains/AudiencePainView.js";
 import { AudiencePainStatusType } from "../../../../domain/project-knowledge/audience-pains/Constants.js";
 
@@ -17,7 +17,7 @@ export class SqliteAudiencePainUpdatedProjector
 {
   constructor(private db: Database) {}
 
-  async applyAudiencePainUpdated(event: AudiencePainUpdated): Promise<void> {
+  async applyAudiencePainUpdated(event: AudiencePainUpdatedEvent): Promise<void> {
     // Build dynamic UPDATE statement based on provided fields
     const updates: string[] = [];
     const values: unknown[] = [];

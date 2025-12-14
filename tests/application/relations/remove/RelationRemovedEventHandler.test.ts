@@ -4,7 +4,7 @@
 
 import { RelationRemovedEventHandler } from "../../../../src/application/relations/remove/RelationRemovedEventHandler";
 import { IRelationRemovedProjector } from "../../../../src/application/relations/remove/IRelationRemovedProjector";
-import { RelationRemoved } from "../../../../src/domain/relations/remove/RelationRemovedEvent";
+import { RelationRemovedEvent } from "../../../../src/domain/relations/remove/RelationRemovedEvent";
 import { RelationEventType, EntityType } from "../../../../src/domain/relations/Constants";
 
 describe("RelationRemovedEventHandler", () => {
@@ -20,9 +20,9 @@ describe("RelationRemovedEventHandler", () => {
     handler = new RelationRemovedEventHandler(projector);
   });
 
-  it("should delegate RelationRemoved event to projector", async () => {
+  it("should delegate RelationRemovedEvent event to projector", async () => {
     // Arrange
-    const event: RelationRemoved = {
+    const event: RelationRemovedEvent = {
       type: RelationEventType.REMOVED,
       aggregateId: "relation_123",
       version: 2,
@@ -45,9 +45,9 @@ describe("RelationRemovedEventHandler", () => {
     expect(projector.applyRelationRemoved).toHaveBeenCalledWith(event);
   });
 
-  it("should handle RelationRemoved event without reason", async () => {
+  it("should handle RelationRemovedEvent event without reason", async () => {
     // Arrange
-    const event: RelationRemoved = {
+    const event: RelationRemovedEvent = {
       type: RelationEventType.REMOVED,
       aggregateId: "relation_456",
       version: 2,

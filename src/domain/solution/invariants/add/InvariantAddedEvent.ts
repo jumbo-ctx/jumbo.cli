@@ -7,8 +7,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface InvariantAdded extends BaseEvent {
-  readonly type: "InvariantAdded";
+export interface InvariantAddedEvent extends BaseEvent {
+  readonly type: "InvariantAddedEvent";
   readonly payload: {
     readonly title: string;
     readonly description: string;

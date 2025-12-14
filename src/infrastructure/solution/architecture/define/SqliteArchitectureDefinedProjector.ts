@@ -5,13 +5,13 @@
 import { Database } from "better-sqlite3";
 import { IArchitectureDefinedProjector } from "../../../../application/solution/architecture/define/IArchitectureDefinedProjector.js";
 import { IArchitectureDefineReader } from "../../../../application/solution/architecture/define/IArchitectureDefineReader.js";
-import { ArchitectureDefined } from "../../../../domain/solution/architecture/define/ArchitectureDefinedEvent.js";
+import { ArchitectureDefinedEvent } from "../../../../domain/solution/architecture/define/ArchitectureDefinedEvent.js";
 import { ArchitectureView } from "../../../../application/solution/architecture/ArchitectureView.js";
 
 export class SqliteArchitectureDefinedProjector implements IArchitectureDefinedProjector, IArchitectureDefineReader {
   constructor(private db: Database) {}
 
-  async applyArchitectureDefined(event: ArchitectureDefined): Promise<void> {
+  async applyArchitectureDefined(event: ArchitectureDefinedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO architecture_views (
         architectureId, description, organization, patterns, principles,

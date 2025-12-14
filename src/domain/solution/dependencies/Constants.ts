@@ -1,8 +1,8 @@
 // Dependency event types
 export const DependencyEventType = {
-  ADDED: 'DependencyAdded',
-  UPDATED: 'DependencyUpdated',
-  REMOVED: 'DependencyRemoved'
+  ADDED: 'DependencyAddedEvent',
+  UPDATED: 'DependencyUpdatedEvent',
+  REMOVED: 'DependencyRemovedEvent'
 } as const;
 
 // Status enum

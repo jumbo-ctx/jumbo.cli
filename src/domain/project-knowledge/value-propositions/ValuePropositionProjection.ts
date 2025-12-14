@@ -1,15 +1,15 @@
-import { ValuePropositionAdded } from "./add/ValuePropositionAddedEvent.js";
-import { ValuePropositionUpdated } from "./update/ValuePropositionUpdatedEvent.js";
-import { ValuePropositionRemoved } from "./remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionAddedEvent } from "./add/ValuePropositionAddedEvent.js";
+import { ValuePropositionUpdatedEvent } from "./update/ValuePropositionUpdatedEvent.js";
+import { ValuePropositionRemovedEvent } from "./remove/ValuePropositionRemovedEvent.js";
 import { UUID } from "../../shared/BaseEvent.js";
 import { AggregateState } from "../../shared/BaseAggregate.js";
 import { ValuePropositionEventType } from "./Constants.js";
 
 // Re-export ValuePropositionEvent type from here for convenience
 export type ValuePropositionEvent =
-  | ValuePropositionAdded
-  | ValuePropositionUpdated
-  | ValuePropositionRemoved;
+  | ValuePropositionAddedEvent
+  | ValuePropositionUpdatedEvent
+  | ValuePropositionRemovedEvent;
 
 // Domain state: business properties + aggregate metadata
 export interface ValuePropositionState extends AggregateState {
@@ -32,7 +32,7 @@ export class ValuePropositionProjection {
   ): void {
     switch (event.type) {
       case ValuePropositionEventType.ADDED: {
-        const e = event as ValuePropositionAdded;
+        const e = event as ValuePropositionAddedEvent;
         state.title = e.payload.title;
         state.description = e.payload.description;
         state.benefit = e.payload.benefit;
@@ -41,7 +41,7 @@ export class ValuePropositionProjection {
         break;
       }
       case ValuePropositionEventType.UPDATED: {
-        const e = event as ValuePropositionUpdated;
+        const e = event as ValuePropositionUpdatedEvent;
         if (e.payload.title !== undefined) state.title = e.payload.title;
         if (e.payload.description !== undefined)
           state.description = e.payload.description;

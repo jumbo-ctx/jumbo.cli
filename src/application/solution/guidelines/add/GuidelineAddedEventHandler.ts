@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { GuidelineAdded } from "../../../../domain/solution/guidelines/add/GuidelineAddedEvent.js";
+import { GuidelineAddedEvent } from "../../../../domain/solution/guidelines/add/GuidelineAddedEvent.js";
 import { IGuidelineAddedProjector } from "./IGuidelineAddedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class GuidelineAddedEventHandler implements IEventHandler {
   constructor(private readonly projector: IGuidelineAddedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const guidelineAddedEvent = event as GuidelineAdded;
+    const guidelineAddedEvent = event as GuidelineAddedEvent;
     await this.projector.applyGuidelineAdded(guidelineAddedEvent);
   }
 }

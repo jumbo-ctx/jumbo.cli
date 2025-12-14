@@ -13,8 +13,8 @@ export interface DataStore {
   readonly purpose: string;
 }
 
-export interface ArchitectureDefined extends BaseEvent {
-  readonly type: "ArchitectureDefined";
+export interface ArchitectureDefinedEvent extends BaseEvent {
+  readonly type: "ArchitectureDefinedEvent";
   readonly payload: {
     readonly description: string;
     readonly organization: string;

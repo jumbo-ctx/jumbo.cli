@@ -7,8 +7,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { ComponentTypeValue } from "../Constants.js";
 
-export interface ComponentUpdated extends BaseEvent {
-  readonly type: "ComponentUpdated";
+export interface ComponentUpdatedEvent extends BaseEvent {
+  readonly type: "ComponentUpdatedEvent";
   readonly payload: {
     readonly description?: string;
     readonly responsibility?: string;

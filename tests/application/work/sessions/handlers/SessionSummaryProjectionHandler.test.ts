@@ -59,19 +59,19 @@ describe("SessionSummaryProjectionHandler", () => {
       handler.subscribe();
 
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
-        "SessionStarted",
+        "SessionStartedEvent",
         expect.any(Object)
       );
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
-        "SessionEnded",
+        "SessionEndedEvent",
         expect.any(Object)
       );
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
-        "SessionPaused",
+        "SessionPausedEvent",
         expect.any(Object)
       );
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
-        "SessionResumed",
+        "SessionResumedEvent",
         expect.any(Object)
       );
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
@@ -83,7 +83,7 @@ describe("SessionSummaryProjectionHandler", () => {
         expect.any(Object)
       );
       expect(mockEventBus.subscribe).toHaveBeenCalledWith(
-        "DecisionAdded",
+        "DecisionAddedEvent",
         expect.any(Object)
       );
     });
@@ -92,7 +92,7 @@ describe("SessionSummaryProjectionHandler", () => {
   describe("handleSessionStarted", () => {
     it("should archive old LATEST and create new LATEST seed", async () => {
       const sessionStartedEvent = {
-        type: "SessionStarted",
+        type: "SessionStartedEvent",
         aggregateId: "session_123",
         version: 1,
         timestamp: "2025-01-01T10:00:00Z",
@@ -105,7 +105,7 @@ describe("SessionSummaryProjectionHandler", () => {
       // Get the handler that was passed to subscribe
       handler.subscribe();
       const subscribeCall = (mockEventBus.subscribe as jest.Mock).mock.calls.find(
-        (call) => call[0] === "SessionStarted"
+        (call) => call[0] === "SessionStartedEvent"
       );
       const eventHandler = subscribeCall![1] as { handle: (event: any) => Promise<void> };
 
@@ -134,7 +134,7 @@ describe("SessionSummaryProjectionHandler", () => {
   describe("handleSessionEnded", () => {
     it("should mark LATEST as ended", async () => {
       const sessionEndedEvent = {
-        type: "SessionEnded",
+        type: "SessionEndedEvent",
         aggregateId: "session_123",
         version: 1,
         timestamp: "2025-01-01T12:00:00Z",
@@ -146,7 +146,7 @@ describe("SessionSummaryProjectionHandler", () => {
 
       handler.subscribe();
       const subscribeCall = (mockEventBus.subscribe as jest.Mock).mock.calls.find(
-        (call) => call[0] === "SessionEnded"
+        (call) => call[0] === "SessionEndedEvent"
       );
       const eventHandler = subscribeCall![1] as { handle: (event: any) => Promise<void> };
 
@@ -377,7 +377,7 @@ describe("SessionSummaryProjectionHandler", () => {
   describe("handleDecisionAdded", () => {
     it("should append enriched decision when LATEST is active", async () => {
       const decisionAddedEvent = {
-        type: "DecisionAdded",
+        type: "DecisionAddedEvent",
         aggregateId: "dec_001",
         version: 1,
         timestamp: "2025-01-01T11:45:00Z",
@@ -425,7 +425,7 @@ describe("SessionSummaryProjectionHandler", () => {
 
       handler.subscribe();
       const subscribeCall = (mockEventBus.subscribe as jest.Mock).mock.calls.find(
-        (call) => call[0] === "DecisionAdded"
+        (call) => call[0] === "DecisionAddedEvent"
       );
       const eventHandler = subscribeCall![1] as { handle: (event: any) => Promise<void> };
 

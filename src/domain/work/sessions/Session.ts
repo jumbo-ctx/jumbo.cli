@@ -4,7 +4,7 @@ import {
 } from "../../shared/BaseAggregate.js";
 import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { SessionEvent, SessionStarted, SessionPaused, SessionResumed, SessionEnded } from "./EventIndex.js";
+import { SessionEvent, SessionStartedEvent, SessionPausedEvent, SessionResumedEvent, SessionEndedEvent } from "./EventIndex.js";
 import {
   SessionEventType,
   SessionStatus,
@@ -49,7 +49,7 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
         break;
       }
       case SessionEventType.ENDED: {
-        const e = event as SessionEnded;
+        const e = event as SessionEndedEvent;
         state.focus = e.payload.focus;
         state.status = SessionStatus.ENDED;
         state.version = e.version;
@@ -87,7 +87,7 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
     return new Session(state);
   }
 
-  start(): SessionStarted {
+  start(): SessionStartedEvent {
     // State validation
     if (this.state.version > 0) {
       throw new Error(SessionErrorMessages.ALREADY_STARTED);
@@ -101,10 +101,10 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
       SessionEventType.STARTED,
       {},
       Session.apply
-    ) as SessionStarted;
+    ) as SessionStartedEvent;
   }
 
-  pause(): SessionPaused {
+  pause(): SessionPausedEvent {
     // State validation - cannot pause an ended session
     if (this.state.status === SessionStatus.ENDED) {
       throw new Error("Cannot pause an ended session");
@@ -121,10 +121,10 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
       SessionEventType.PAUSED,
       {},
       Session.apply
-    ) as SessionPaused;
+    ) as SessionPausedEvent;
   }
 
-  resume(): SessionResumed {
+  resume(): SessionResumedEvent {
     // State validation - cannot resume an ended session
     if (this.state.status === SessionStatus.ENDED) {
       throw new Error("Cannot resume an ended session");
@@ -141,14 +141,14 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
       SessionEventType.RESUMED,
       {},
       Session.apply
-    ) as SessionResumed;
+    ) as SessionResumedEvent;
   }
 
   /**
    * Ends the session with a focus summary.
    * @throws Error if session is already ended
    */
-  end(focus: string, summary?: string): SessionEnded {
+  end(focus: string, summary?: string): SessionEndedEvent {
     // 1. State validation
     if (this.state.status === SessionStatus.ENDED) {
       throw new Error(SessionErrorMessages.SESSION_ALREADY_ENDED);
@@ -168,6 +168,6 @@ export class Session extends BaseAggregate<SessionState, SessionEvent> {
         summary: summary || null,
       },
       Session.apply
-    ) as SessionEnded;
+    ) as SessionEndedEvent;
   }
 }

@@ -3,7 +3,7 @@ import { AddDecisionCommand } from "./AddDecisionCommand.js";
 import { IDecisionAddedEventWriter } from "./IDecisionAddedEventWriter.js";
 import { IEventBus } from "../../../shared/messaging/IEventBus.js";
 import { Decision } from "../../../../domain/solution/decisions/Decision.js";
-import { DecisionAdded } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
+import { DecisionAddedEvent } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
 
 /**
  * Application layer handler for the AddDecision command.
@@ -27,7 +27,7 @@ export class AddDecisionCommandHandler {
       command.rationale,
       command.alternatives,
       command.consequences
-    ) as DecisionAdded;
+    ) as DecisionAddedEvent;
 
     // 3. Persist event to file store
     await this.eventWriter.append(event);

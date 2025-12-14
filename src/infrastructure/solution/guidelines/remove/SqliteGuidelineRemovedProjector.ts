@@ -5,7 +5,7 @@
 import { Database } from "better-sqlite3";
 import { IGuidelineRemovedProjector } from "../../../../application/solution/guidelines/remove/IGuidelineRemovedProjector.js";
 import { IGuidelineRemoveReader } from "../../../../application/solution/guidelines/remove/IGuidelineRemoveReader.js";
-import { GuidelineRemoved } from "../../../../domain/solution/guidelines/remove/GuidelineRemovedEvent.js";
+import { GuidelineRemovedEvent } from "../../../../domain/solution/guidelines/remove/GuidelineRemovedEvent.js";
 import { GuidelineView } from "../../../../application/solution/guidelines/GuidelineView.js";
 import { UUID } from "../../../../domain/shared/BaseEvent.js";
 import { GuidelineCategoryValue } from "../../../../domain/solution/guidelines/Constants.js";
@@ -13,7 +13,7 @@ import { GuidelineCategoryValue } from "../../../../domain/solution/guidelines/C
 export class SqliteGuidelineRemovedProjector implements IGuidelineRemovedProjector, IGuidelineRemoveReader {
   constructor(private db: Database) {}
 
-  async applyGuidelineRemoved(event: GuidelineRemoved): Promise<void> {
+  async applyGuidelineRemoved(event: GuidelineRemovedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE guideline_views
       SET isRemoved = 1,

@@ -1,5 +1,5 @@
 /**
- * SqliteAudienceRemovedProjector - SQLite projector for AudienceRemoved event.
+ * SqliteAudienceRemovedProjector - SQLite projector for AudienceRemovedEvent event.
  *
  * Implements IAudienceRemovedProjector and IAudienceRemoveReader for projecting
  * audience remove events to the SQLite read model.
@@ -8,7 +8,7 @@
 import { Database } from "better-sqlite3";
 import { IAudienceRemovedProjector } from "../../../../application/project-knowledge/audiences/remove/IAudienceRemovedProjector.js";
 import { IAudienceRemoveReader } from "../../../../application/project-knowledge/audiences/remove/IAudienceRemoveReader.js";
-import { AudienceRemoved } from "../../../../domain/project-knowledge/audiences/remove/AudienceRemovedEvent.js";
+import { AudienceRemovedEvent } from "../../../../domain/project-knowledge/audiences/remove/AudienceRemovedEvent.js";
 import { AudienceView } from "../../../../application/project-knowledge/audiences/AudienceView.js";
 import { AudiencePriorityType } from "../../../../domain/project-knowledge/audiences/Constants.js";
 
@@ -17,7 +17,7 @@ export class SqliteAudienceRemovedProjector
 {
   constructor(private db: Database) {}
 
-  async applyAudienceRemoved(event: AudienceRemoved): Promise<void> {
+  async applyAudienceRemoved(event: AudienceRemovedEvent): Promise<void> {
     // Soft-delete: mark as removed instead of deleting
     const stmt = this.db.prepare(`
       UPDATE audience_views

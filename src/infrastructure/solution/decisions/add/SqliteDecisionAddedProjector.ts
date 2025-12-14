@@ -7,12 +7,12 @@
 
 import { Database } from "better-sqlite3";
 import { IDecisionAddedProjector } from "../../../../application/solution/decisions/add/IDecisionAddedProjector.js";
-import { DecisionAdded } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
+import { DecisionAddedEvent } from "../../../../domain/solution/decisions/add/DecisionAddedEvent.js";
 
 export class SqliteDecisionAddedProjector implements IDecisionAddedProjector {
   constructor(private db: Database) {}
 
-  async applyDecisionAdded(event: DecisionAdded): Promise<void> {
+  async applyDecisionAdded(event: DecisionAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO decision_views (
         decisionId, title, context, rationale, alternatives,

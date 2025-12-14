@@ -13,9 +13,9 @@ import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
 import {
   GuidelineEvent,
-  GuidelineAdded,
-  GuidelineUpdated,
-  GuidelineRemoved,
+  GuidelineAddedEvent,
+  GuidelineUpdatedEvent,
+  GuidelineRemovedEvent,
 } from "./EventIndex.js";
 import {
   GuidelineEventType,
@@ -56,7 +56,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
   static apply(state: GuidelineState, event: GuidelineEvent): void {
     switch (event.type) {
       case GuidelineEventType.ADDED: {
-        const e = event as GuidelineAdded;
+        const e = event as GuidelineAddedEvent;
         state.category = e.payload.category;
         state.title = e.payload.title;
         state.description = e.payload.description;
@@ -67,7 +67,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
         break;
       }
       case GuidelineEventType.UPDATED: {
-        const e = event as GuidelineUpdated;
+        const e = event as GuidelineUpdatedEvent;
         if (e.payload.category !== undefined) state.category = e.payload.category;
         if (e.payload.title !== undefined) state.title = e.payload.title;
         if (e.payload.description !== undefined) state.description = e.payload.description;
@@ -148,7 +148,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
     rationale: string,
     enforcement: string,
     examples?: string[]
-  ): GuidelineAdded {
+  ): GuidelineAddedEvent {
     // Input validation using rule pattern (synchronous validations)
     ValidationRuleSet.ensure(category, CATEGORY_RULES);
     ValidationRuleSet.ensure(title, TITLE_RULES);
@@ -162,7 +162,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
     }
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<GuidelineAdded>(
+    return this.makeEvent<GuidelineAddedEvent>(
       GuidelineEventType.ADDED,
       {
         category,
@@ -191,7 +191,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
     rationale?: string;
     enforcement?: string;
     examples?: string[];
-  }): GuidelineUpdated {
+  }): GuidelineUpdatedEvent {
     // Ensure at least one change is provided
     if (Object.keys(changes).length === 0) {
       throw new Error(GuidelineErrorMessages.NO_CHANGES);
@@ -220,7 +220,7 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
     }
 
     // Create event with only changed fields
-    return this.makeEvent<GuidelineUpdated>(
+    return this.makeEvent<GuidelineUpdatedEvent>(
       GuidelineEventType.UPDATED,
       changes,
       Guideline.apply
@@ -233,14 +233,14 @@ export class Guideline extends BaseAggregate<GuidelineState, GuidelineEvent> {
    * @returns GuidelineRemoved event
    * @throws Error if guideline is already removed
    */
-  remove(reason?: string): GuidelineRemoved {
+  remove(reason?: string): GuidelineRemovedEvent {
     // State validation
     if (this.state.isRemoved) {
       throw new Error(GuidelineErrorMessages.ALREADY_REMOVED);
     }
 
     // Create and return event (no input validation needed for optional reason)
-    return this.makeEvent<GuidelineRemoved>(
+    return this.makeEvent<GuidelineRemovedEvent>(
       GuidelineEventType.REMOVED,
       {
         removedAt: new Date().toISOString() as import("../../shared/BaseEvent.js").ISO8601,

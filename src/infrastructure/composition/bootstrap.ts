@@ -815,10 +815,10 @@ export function bootstrap(jumboRoot: string): ApplicationContainer {
   // ============================================================
 
   // Work Category - Session events
-  eventBus.subscribe("SessionStarted", sessionStartedEventHandler);
-  eventBus.subscribe("SessionPaused", sessionPausedEventHandler);
-  eventBus.subscribe("SessionResumed", sessionResumedEventHandler);
-  eventBus.subscribe("SessionEnded", sessionEndedEventHandler);
+  eventBus.subscribe("SessionStartedEvent", sessionStartedEventHandler);
+  eventBus.subscribe("SessionPausedEvent", sessionPausedEventHandler);
+  eventBus.subscribe("SessionResumedEvent", sessionResumedEventHandler);
+  eventBus.subscribe("SessionEndedEvent", sessionEndedEventHandler);
 
   // Work Category - Session Summary (cross-aggregate projection)
   sessionSummaryProjectionHandler.subscribe();
@@ -834,58 +834,58 @@ export function bootstrap(jumboRoot: string): ApplicationContainer {
   eventBus.subscribe("GoalRemovedEvent", goalRemovedEventHandler);
 
   // Solution Category - Architecture events - decomposed by use case
-  eventBus.subscribe("ArchitectureDefined", architectureDefinedEventHandler);
-  eventBus.subscribe("ArchitectureUpdated", architectureUpdatedEventHandler);
+  eventBus.subscribe("ArchitectureDefinedEvent", architectureDefinedEventHandler);
+  eventBus.subscribe("ArchitectureUpdatedEvent", architectureUpdatedEventHandler);
 
   // Solution Category - Component events - decomposed by use case
-  eventBus.subscribe("ComponentAdded", componentAddedEventHandler);
-  eventBus.subscribe("ComponentUpdated", componentUpdatedEventHandler);
-  eventBus.subscribe("ComponentDeprecated", componentDeprecatedEventHandler);
-  eventBus.subscribe("ComponentRemoved", componentRemovedEventHandler);
+  eventBus.subscribe("ComponentAddedEvent", componentAddedEventHandler);
+  eventBus.subscribe("ComponentUpdatedEvent", componentUpdatedEventHandler);
+  eventBus.subscribe("ComponentDeprecatedEvent", componentDeprecatedEventHandler);
+  eventBus.subscribe("ComponentRemovedEvent", componentRemovedEventHandler);
 
   // Solution Category - Dependency events - decomposed by use case
-  eventBus.subscribe("DependencyAdded", dependencyAddedEventHandler);
-  eventBus.subscribe("DependencyUpdated", dependencyUpdatedEventHandler);
-  eventBus.subscribe("DependencyRemoved", dependencyRemovedEventHandler);
+  eventBus.subscribe("DependencyAddedEvent", dependencyAddedEventHandler);
+  eventBus.subscribe("DependencyUpdatedEvent", dependencyUpdatedEventHandler);
+  eventBus.subscribe("DependencyRemovedEvent", dependencyRemovedEventHandler);
 
   // Solution Category - Decision events - decomposed by use case
-  eventBus.subscribe("DecisionAdded", decisionAddedEventHandler);
-  eventBus.subscribe("DecisionUpdated", decisionUpdatedEventHandler);
-  eventBus.subscribe("DecisionReversed", decisionReversedEventHandler);
-  eventBus.subscribe("DecisionSuperseded", decisionSupersededEventHandler);
+  eventBus.subscribe("DecisionAddedEvent", decisionAddedEventHandler);
+  eventBus.subscribe("DecisionUpdatedEvent", decisionUpdatedEventHandler);
+  eventBus.subscribe("DecisionReversedEvent", decisionReversedEventHandler);
+  eventBus.subscribe("DecisionSupersededEvent", decisionSupersededEventHandler);
 
   // Solution Category - Guideline events - decomposed by use case
-  eventBus.subscribe("GuidelineAdded", guidelineAddedEventHandler);
-  eventBus.subscribe("GuidelineUpdated", guidelineUpdatedEventHandler);
-  eventBus.subscribe("GuidelineRemoved", guidelineRemovedEventHandler);
+  eventBus.subscribe("GuidelineAddedEvent", guidelineAddedEventHandler);
+  eventBus.subscribe("GuidelineUpdatedEvent", guidelineUpdatedEventHandler);
+  eventBus.subscribe("GuidelineRemovedEvent", guidelineRemovedEventHandler);
 
   // Solution Category - Invariant events - decomposed by use case
-  eventBus.subscribe("InvariantAdded", invariantAddedEventHandler);
-  eventBus.subscribe("InvariantUpdated", invariantUpdatedEventHandler);
-  eventBus.subscribe("InvariantRemoved", invariantRemovedEventHandler);
+  eventBus.subscribe("InvariantAddedEvent", invariantAddedEventHandler);
+  eventBus.subscribe("InvariantUpdatedEvent", invariantUpdatedEventHandler);
+  eventBus.subscribe("InvariantRemovedEvent", invariantRemovedEventHandler);
 
   // Project Knowledge Category - Project events - decomposed by use case
-  eventBus.subscribe("ProjectInitialized", projectInitializedEventHandler);
-  eventBus.subscribe("ProjectUpdated", projectUpdatedEventHandler);
+  eventBus.subscribe("ProjectInitializedEvent", projectInitializedEventHandler);
+  eventBus.subscribe("ProjectUpdatedEvent", projectUpdatedEventHandler);
 
   // Project Knowledge Category - Audience Pain events - decomposed by use case
-  eventBus.subscribe("AudiencePainAdded", audiencePainAddedEventHandler);
-  eventBus.subscribe("AudiencePainUpdated", audiencePainUpdatedEventHandler);
-  eventBus.subscribe("AudiencePainResolved", audiencePainResolvedEventHandler);
+  eventBus.subscribe("AudiencePainAddedEvent", audiencePainAddedEventHandler);
+  eventBus.subscribe("AudiencePainUpdatedEvent", audiencePainUpdatedEventHandler);
+  eventBus.subscribe("AudiencePainResolvedEvent", audiencePainResolvedEventHandler);
 
   // Project Knowledge Category - Audience events - decomposed by use case
-  eventBus.subscribe("AudienceAdded", audienceAddedEventHandler);
-  eventBus.subscribe("AudienceUpdated", audienceUpdatedEventHandler);
-  eventBus.subscribe("AudienceRemoved", audienceRemovedEventHandler);
+  eventBus.subscribe("AudienceAddedEvent", audienceAddedEventHandler);
+  eventBus.subscribe("AudienceUpdatedEvent", audienceUpdatedEventHandler);
+  eventBus.subscribe("AudienceRemovedEvent", audienceRemovedEventHandler);
 
   // Project Knowledge Category - Value Proposition events - decomposed by use case
-  eventBus.subscribe("ValuePropositionAdded", valuePropositionAddedEventHandler);
-  eventBus.subscribe("ValuePropositionUpdated", valuePropositionUpdatedEventHandler);
-  eventBus.subscribe("ValuePropositionRemoved", valuePropositionRemovedEventHandler);
+  eventBus.subscribe("ValuePropositionAddedEvent", valuePropositionAddedEventHandler);
+  eventBus.subscribe("ValuePropositionUpdatedEvent", valuePropositionUpdatedEventHandler);
+  eventBus.subscribe("ValuePropositionRemovedEvent", valuePropositionRemovedEventHandler);
 
   // Relations Category - Relation events - decomposed by use case
-  eventBus.subscribe("RelationAdded", relationAddedEventHandler);
-  eventBus.subscribe("RelationRemoved", relationRemovedEventHandler);
+  eventBus.subscribe("RelationAddedEvent", relationAddedEventHandler);
+  eventBus.subscribe("RelationRemovedEvent", relationRemovedEventHandler);
 
   // ============================================================
   // STEP 6: Return Complete Container

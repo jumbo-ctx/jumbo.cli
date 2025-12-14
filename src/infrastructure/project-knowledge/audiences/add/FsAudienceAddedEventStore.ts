@@ -1,5 +1,5 @@
 /**
- * FsAudienceAddedEventStore - File system event store for AudienceAdded event.
+ * FsAudienceAddedEventStore - File system event store for AudienceAddedEvent event.
  *
  * Implements IAudienceAddedEventWriter for persisting audience add events.
  * Extends the base FsEventStore implementation.

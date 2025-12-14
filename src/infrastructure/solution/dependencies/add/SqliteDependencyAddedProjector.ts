@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDependencyAddedProjector } from "../../../../application/solution/dependencies/add/IDependencyAddedProjector.js";
 import { IDependencyAddReader } from "../../../../application/solution/dependencies/add/IDependencyAddReader.js";
-import { DependencyAdded } from "../../../../domain/solution/dependencies/add/DependencyAddedEvent.js";
+import { DependencyAddedEvent } from "../../../../domain/solution/dependencies/add/DependencyAddedEvent.js";
 import { DependencyView } from "../../../../application/solution/dependencies/DependencyView.js";
 
 export class SqliteDependencyAddedProjector implements IDependencyAddedProjector, IDependencyAddReader {
   constructor(private db: Database) {}
 
-  async applyDependencyAdded(event: DependencyAdded): Promise<void> {
+  async applyDependencyAdded(event: DependencyAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO dependency_views (
         dependencyId, consumerId, providerId, endpoint, contract,

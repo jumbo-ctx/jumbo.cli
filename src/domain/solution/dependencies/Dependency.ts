@@ -3,9 +3,9 @@ import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
 import {
   DependencyEvent,
-  DependencyAdded,
-  DependencyUpdated,
-  DependencyRemoved
+  DependencyAddedEvent,
+  DependencyUpdatedEvent,
+  DependencyRemovedEvent
 } from "./EventIndex.js";
 import { DependencyEventType, DependencyStatus, DependencyStatusType, DependencyErrorMessages } from "./Constants.js";
 import { CONSUMER_ID_RULES } from "./rules/ConsumerIdRules.js";
@@ -37,7 +37,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
   static apply(state: DependencyState, event: DependencyEvent): void {
     switch (event.type) {
       case DependencyEventType.ADDED: {
-        const e = event as DependencyAdded;
+        const e = event as DependencyAddedEvent;
         state.consumerId = e.payload.consumerId;
         state.providerId = e.payload.providerId;
         state.endpoint = e.payload.endpoint;
@@ -47,7 +47,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
         break;
       }
       case DependencyEventType.UPDATED: {
-        const e = event as DependencyUpdated;
+        const e = event as DependencyUpdatedEvent;
         if (e.payload.endpoint !== undefined) state.endpoint = e.payload.endpoint;
         if (e.payload.contract !== undefined) state.contract = e.payload.contract;
         if (e.payload.status !== undefined) state.status = e.payload.status;
@@ -102,7 +102,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
     providerId: string,
     endpoint?: string,
     contract?: string
-  ): DependencyAdded {
+  ): DependencyAddedEvent {
     // Validation using rule pattern
     ValidationRuleSet.ensure(consumerId, CONSUMER_ID_RULES);
     ValidationRuleSet.ensure(providerId, PROVIDER_ID_RULES);
@@ -110,7 +110,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
     if (contract) ValidationRuleSet.ensure(contract, CONTRACT_RULES);
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<DependencyAdded>(
+    return this.makeEvent<DependencyAddedEvent>(
       DependencyEventType.ADDED,
       {
         consumerId,
@@ -126,7 +126,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
     endpoint?: string | null,
     contract?: string | null,
     status?: DependencyStatusType
-  ): DependencyUpdated {
+  ): DependencyUpdatedEvent {
     // Validation for updated fields
     if (endpoint !== undefined && endpoint !== null) {
       ValidationRuleSet.ensure(endpoint, ENDPOINT_RULES);
@@ -138,7 +138,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
       ValidationRuleSet.ensure(status, STATUS_RULES);
     }
 
-    return this.makeEvent<DependencyUpdated>(
+    return this.makeEvent<DependencyUpdatedEvent>(
       DependencyEventType.UPDATED,
       {
         endpoint: endpoint !== undefined ? endpoint : undefined,
@@ -149,7 +149,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
     );
   }
 
-  remove(reason?: string): DependencyRemoved {
+  remove(reason?: string): DependencyRemovedEvent {
     // 1. State validation - can't remove if already removed
     if (this.state.status === DependencyStatus.REMOVED) {
       throw new Error(DependencyErrorMessages.ALREADY_REMOVED);
@@ -159,7 +159,7 @@ export class Dependency extends BaseAggregate<DependencyState, DependencyEvent> 
     // (Could add reason length validation if desired)
 
     // 3. Create and return event
-    return this.makeEvent<DependencyRemoved>(
+    return this.makeEvent<DependencyRemovedEvent>(
       DependencyEventType.REMOVED,
       {
         reason: reason || null

@@ -8,14 +8,14 @@
 import { Database } from "better-sqlite3";
 import { IComponentAddedProjector } from "../../../../application/solution/components/add/IComponentAddedProjector.js";
 import { IComponentAddReader } from "../../../../application/solution/components/add/IComponentAddReader.js";
-import { ComponentAdded } from "../../../../domain/solution/components/EventIndex.js";
+import { ComponentAddedEvent } from "../../../../domain/solution/components/EventIndex.js";
 import { ComponentView } from "../../../../application/solution/components/ComponentView.js";
 import { ComponentTypeValue, ComponentStatusValue } from "../../../../domain/solution/components/Constants.js";
 
 export class SqliteComponentAddedProjector implements IComponentAddedProjector, IComponentAddReader {
   constructor(private db: Database) {}
 
-  async applyComponentAdded(event: ComponentAdded): Promise<void> {
+  async applyComponentAdded(event: ComponentAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO component_views (
         componentId, name, type, description, responsibility,

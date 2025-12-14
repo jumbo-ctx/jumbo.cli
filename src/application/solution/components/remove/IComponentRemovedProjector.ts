@@ -1,5 +1,5 @@
-import { ComponentRemoved } from "../../../../domain/solution/components/remove/ComponentRemovedEvent.js";
+import { ComponentRemovedEvent } from "../../../../domain/solution/components/remove/ComponentRemovedEvent.js";
 
 export interface IComponentRemovedProjector {
-  applyComponentRemoved(event: ComponentRemoved): Promise<void>;
+  applyComponentRemoved(event: ComponentRemovedEvent): Promise<void>;
 }

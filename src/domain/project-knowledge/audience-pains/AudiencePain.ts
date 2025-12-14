@@ -1,7 +1,7 @@
 import { BaseAggregate, AggregateState } from "../../shared/BaseAggregate.js";
 import { UUID, ISO8601 } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { AudiencePainEvent, AudiencePainAdded, AudiencePainUpdated, AudiencePainResolved } from "./EventIndex.js";
+import { AudiencePainEvent, AudiencePainAddedEvent, AudiencePainUpdatedEvent, AudiencePainResolvedEvent } from "./EventIndex.js";
 import { AudiencePainEventType, AudiencePainErrorMessages, AudiencePainStatus, AudiencePainStatusType } from "./Constants.js";
 import { TITLE_RULES } from "./rules/TitleRules.js";
 import { DESCRIPTION_RULES } from "./rules/DescriptionRules.js";
@@ -27,7 +27,7 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
   static apply(state: AudiencePainState, event: AudiencePainEvent): void {
     switch (event.type) {
       case AudiencePainEventType.ADDED: {
-        const e = event as AudiencePainAdded;
+        const e = event as AudiencePainAddedEvent;
         state.title = e.payload.title;
         state.description = e.payload.description;
         state.status = AudiencePainStatus.ACTIVE;
@@ -36,7 +36,7 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
         break;
       }
       case AudiencePainEventType.UPDATED: {
-        const e = event as AudiencePainUpdated;
+        const e = event as AudiencePainUpdatedEvent;
         if (e.payload.title !== undefined) {
           state.title = e.payload.title;
         }
@@ -88,13 +88,13 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
     return new AudiencePain(state);
   }
 
-  add(title: string, description: string): AudiencePainAdded {
+  add(title: string, description: string): AudiencePainAddedEvent {
     // Validation using rule pattern
     ValidationRuleSet.ensure(title, TITLE_RULES);
     ValidationRuleSet.ensure(description, DESCRIPTION_RULES);
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<AudiencePainAdded>(
+    return this.makeEvent<AudiencePainAddedEvent>(
       AudiencePainEventType.ADDED,
       { title, description },
       AudiencePain.apply
@@ -105,7 +105,7 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
    * Update pain details (title and/or description).
    * At least one field must be provided.
    */
-  update(title?: string, description?: string): AudiencePainUpdated {
+  update(title?: string, description?: string): AudiencePainUpdatedEvent {
     // Business rule: must provide at least one change
     if (title === undefined && description === undefined) {
       throw new Error(AudiencePainErrorMessages.NO_CHANGES);
@@ -119,7 +119,7 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
       ValidationRuleSet.ensure(description, DESCRIPTION_RULES);
     }
 
-    return this.makeEvent<AudiencePainUpdated>(
+    return this.makeEvent<AudiencePainUpdatedEvent>(
       AudiencePainEventType.UPDATED,
       {
         title,
@@ -133,14 +133,14 @@ export class AudiencePain extends BaseAggregate<AudiencePainState, AudiencePainE
    * Mark pain as resolved.
    * Indicates that the problem has been addressed.
    */
-  resolve(resolutionNotes?: string): AudiencePainResolved {
+  resolve(resolutionNotes?: string): AudiencePainResolvedEvent {
     // State validation - can't resolve already resolved pain
     if (this.state.status === AudiencePainStatus.RESOLVED) {
       throw new Error(AudiencePainErrorMessages.ALREADY_RESOLVED);
     }
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<AudiencePainResolved>(
+    return this.makeEvent<AudiencePainResolvedEvent>(
       AudiencePainEventType.RESOLVED,
       { resolutionNotes },
       AudiencePain.apply

@@ -5,10 +5,10 @@
 
 // Decision event types
 export const DecisionEventType = {
-  ADDED: 'DecisionAdded',
-  UPDATED: 'DecisionUpdated',
-  REVERSED: 'DecisionReversed',
-  SUPERSEDED: 'DecisionSuperseded'
+  ADDED: 'DecisionAddedEvent',
+  UPDATED: 'DecisionUpdatedEvent',
+  REVERSED: 'DecisionReversedEvent',
+  SUPERSEDED: 'DecisionSupersededEvent'
 } as const;
 
 export type DecisionEventTypeValue = typeof DecisionEventType[keyof typeof DecisionEventType];

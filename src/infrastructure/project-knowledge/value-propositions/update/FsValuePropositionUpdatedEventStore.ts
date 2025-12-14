@@ -1,5 +1,5 @@
 /**
- * FsValuePropositionUpdatedEventStore - File system event store for ValuePropositionUpdated event.
+ * FsValuePropositionUpdatedEventStore - File system event store for ValuePropositionUpdatedEvent event.
  *
  * Implements IValuePropositionUpdatedEventWriter for persisting value proposition update events.
  * Extends the base FsEventStore implementation.

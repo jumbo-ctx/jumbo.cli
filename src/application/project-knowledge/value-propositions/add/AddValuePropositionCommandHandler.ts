@@ -2,7 +2,7 @@ import { AddValuePropositionCommand } from "./AddValuePropositionCommand.js";
 import { IValuePropositionAddedEventWriter } from "./IValuePropositionAddedEventWriter.js";
 import { IEventBus } from "../../../shared/messaging/IEventBus.js";
 import { ValueProposition } from "../../../../domain/project-knowledge/value-propositions/ValueProposition.js";
-import { ValuePropositionAdded } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
+import { ValuePropositionAddedEvent } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
 import { randomUUID } from "crypto";
 
 /**
@@ -28,7 +28,7 @@ export class AddValuePropositionCommandHandler {
       command.description,
       command.benefit,
       command.measurableOutcome
-    ) as ValuePropositionAdded;
+    ) as ValuePropositionAddedEvent;
 
     // 3. Persist event to file store
     await this.eventWriter.append(event);

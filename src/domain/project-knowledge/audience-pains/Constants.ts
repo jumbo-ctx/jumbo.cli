@@ -1,8 +1,8 @@
 // Event types
 export const AudiencePainEventType = {
-  ADDED: 'AudiencePainAdded',
-  UPDATED: 'AudiencePainUpdated',
-  RESOLVED: 'AudiencePainResolved'
+  ADDED: 'AudiencePainAddedEvent',
+  UPDATED: 'AudiencePainUpdatedEvent',
+  RESOLVED: 'AudiencePainResolvedEvent'
 } as const;
 
 export type AudiencePainEventTypeValue = typeof AudiencePainEventType[keyof typeof AudiencePainEventType];

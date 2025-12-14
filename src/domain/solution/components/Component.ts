@@ -3,10 +3,10 @@ import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
 import {
   ComponentEvent,
-  ComponentAdded,
-  ComponentUpdated,
-  ComponentDeprecated,
-  ComponentRemoved
+  ComponentAddedEvent,
+  ComponentUpdatedEvent,
+  ComponentDeprecatedEvent,
+  ComponentRemovedEvent
 } from "./EventIndex.js";
 import {
   ComponentEventType,
@@ -46,7 +46,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
   static apply(state: ComponentState, event: ComponentEvent): void {
     switch (event.type) {
       case ComponentEventType.ADDED: {
-        const e = event as ComponentAdded;
+        const e = event as ComponentAddedEvent;
         state.name = e.payload.name;
         state.type = e.payload.type;
         state.description = e.payload.description;
@@ -57,7 +57,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
         break;
       }
       case ComponentEventType.UPDATED: {
-        const e = event as ComponentUpdated;
+        const e = event as ComponentUpdatedEvent;
         if (e.payload.description !== undefined) state.description = e.payload.description;
         if (e.payload.responsibility !== undefined) state.responsibility = e.payload.responsibility;
         if (e.payload.path !== undefined) state.path = e.payload.path;
@@ -66,14 +66,14 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
         break;
       }
       case ComponentEventType.DEPRECATED: {
-        const e = event as ComponentDeprecated;
+        const e = event as ComponentDeprecatedEvent;
         state.status = e.payload.status;
         state.deprecationReason = e.payload.reason;
         state.version = e.version;
         break;
       }
       case ComponentEventType.REMOVED: {
-        const e = event as ComponentRemoved;
+        const e = event as ComponentRemovedEvent;
         state.status = e.payload.status;
         state.version = e.version;
         break;
@@ -126,7 +126,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     description: string,
     responsibility: string,
     path: string
-  ): ComponentAdded {
+  ): ComponentAddedEvent {
     // Validation using rule pattern
     ValidationRuleSet.ensure(name, NAME_RULES);
     ValidationRuleSet.ensure(type, TYPE_RULES);
@@ -134,7 +134,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     ValidationRuleSet.ensure(responsibility, RESPONSIBILITY_RULES);
     ValidationRuleSet.ensure(path, PATH_RULES);
 
-    return this.makeEvent<ComponentAdded>(
+    return this.makeEvent<ComponentAddedEvent>(
       ComponentEventType.ADDED,
       {
         name,
@@ -153,7 +153,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     responsibility?: string,
     path?: string,
     type?: ComponentTypeValue
-  ): ComponentUpdated {
+  ): ComponentUpdatedEvent {
     if (this.state.status === ComponentStatus.REMOVED) {
       throw new Error(ComponentErrorMessages.ALREADY_REMOVED);
     }
@@ -169,7 +169,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     if (path !== undefined) ValidationRuleSet.ensure(path, PATH_RULES);
     if (type !== undefined) ValidationRuleSet.ensure(type, TYPE_RULES);
 
-    return this.makeEvent<ComponentUpdated>(
+    return this.makeEvent<ComponentUpdatedEvent>(
       ComponentEventType.UPDATED,
       {
         description,
@@ -181,7 +181,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     );
   }
 
-  deprecate(reason?: string): ComponentDeprecated {
+  deprecate(reason?: string): ComponentDeprecatedEvent {
     // State validation
     if (this.state.status === ComponentStatus.REMOVED) {
       throw new Error(ComponentErrorMessages.ALREADY_REMOVED);
@@ -194,7 +194,7 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
       ValidationRuleSet.ensure(reason, DEPRECATION_REASON_RULES);
     }
 
-    return this.makeEvent<ComponentDeprecated>(
+    return this.makeEvent<ComponentDeprecatedEvent>(
       ComponentEventType.DEPRECATED,
       {
         reason: reason || null,
@@ -204,12 +204,12 @@ export class Component extends BaseAggregate<ComponentState, ComponentEvent> {
     );
   }
 
-  remove(): ComponentRemoved {
+  remove(): ComponentRemovedEvent {
     if (this.state.status !== ComponentStatus.DEPRECATED) {
       throw new Error(ComponentErrorMessages.NOT_DEPRECATED);
     }
 
-    return this.makeEvent<ComponentRemoved>(
+    return this.makeEvent<ComponentRemovedEvent>(
       ComponentEventType.REMOVED,
       {
         status: ComponentStatus.REMOVED

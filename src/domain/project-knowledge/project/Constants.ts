@@ -5,8 +5,8 @@
 
 // Project event types
 export const ProjectEventType = {
-  INITIALIZED: "ProjectInitialized",
-  UPDATED: "ProjectUpdated",
+  INITIALIZED: "ProjectInitializedEvent",
+  UPDATED: "ProjectUpdatedEvent",
 } as const;
 
 export type ProjectEventTypeValue =

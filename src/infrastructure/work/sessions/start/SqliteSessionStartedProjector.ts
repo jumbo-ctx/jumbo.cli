@@ -7,12 +7,12 @@
 
 import { Database } from "better-sqlite3";
 import { ISessionStartedProjector } from "../../../../application/work/sessions/start/ISessionStartedProjector.js";
-import { SessionStarted } from "../../../../domain/work/sessions/start/SessionStartedEvent.js";
+import { SessionStartedEvent } from "../../../../domain/work/sessions/start/SessionStartedEvent.js";
 
 export class SqliteSessionStartedProjector implements ISessionStartedProjector {
   constructor(private db: Database) {}
 
-  async applySessionStarted(event: SessionStarted): Promise<void> {
+  async applySessionStarted(event: SessionStartedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO session_views (
         sessionId, focus, status, contextSnapshot,

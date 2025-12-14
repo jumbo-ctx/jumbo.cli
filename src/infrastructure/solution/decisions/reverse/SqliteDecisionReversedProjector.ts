@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDecisionReversedProjector } from "../../../../application/solution/decisions/reverse/IDecisionReversedProjector.js";
 import { IDecisionReverseReader } from "../../../../application/solution/decisions/reverse/IDecisionReverseReader.js";
-import { DecisionReversed } from "../../../../domain/solution/decisions/reverse/DecisionReversedEvent.js";
+import { DecisionReversedEvent } from "../../../../domain/solution/decisions/reverse/DecisionReversedEvent.js";
 import { DecisionView } from "../../../../application/solution/decisions/DecisionView.js";
 
 export class SqliteDecisionReversedProjector implements IDecisionReversedProjector, IDecisionReverseReader {
   constructor(private db: Database) {}
 
-  async applyDecisionReversed(event: DecisionReversed): Promise<void> {
+  async applyDecisionReversed(event: DecisionReversedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE decision_views
       SET status = 'reversed',

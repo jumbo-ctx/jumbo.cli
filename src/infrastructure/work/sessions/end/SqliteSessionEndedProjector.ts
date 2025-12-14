@@ -7,13 +7,13 @@
 
 import { Database } from "better-sqlite3";
 import { ISessionEndedProjector } from "../../../../application/work/sessions/end/ISessionEndedProjector.js";
-import { SessionEnded } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
+import { SessionEndedEvent } from "../../../../domain/work/sessions/end/SessionEndedEvent.js";
 import { SessionStatus } from "../../../../domain/work/sessions/Constants.js";
 
 export class SqliteSessionEndedProjector implements ISessionEndedProjector {
   constructor(private db: Database) {}
 
-  async applySessionEnded(event: SessionEnded): Promise<void> {
+  async applySessionEnded(event: SessionEndedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE session_views
       SET focus = ?,

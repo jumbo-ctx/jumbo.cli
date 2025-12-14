@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { ArchitectureUpdated } from "../../../../domain/solution/architecture/update/ArchitectureUpdatedEvent.js";
+import { ArchitectureUpdatedEvent } from "../../../../domain/solution/architecture/update/ArchitectureUpdatedEvent.js";
 import { IArchitectureUpdatedProjector } from "./IArchitectureUpdatedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class ArchitectureUpdatedEventHandler implements IEventHandler {
   constructor(private readonly projector: IArchitectureUpdatedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const architectureUpdatedEvent = event as ArchitectureUpdated;
+    const architectureUpdatedEvent = event as ArchitectureUpdatedEvent;
     await this.projector.applyArchitectureUpdated(architectureUpdatedEvent);
   }
 }

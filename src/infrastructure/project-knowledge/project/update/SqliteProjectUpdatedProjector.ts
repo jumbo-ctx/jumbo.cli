@@ -5,13 +5,13 @@
 import { Database } from "better-sqlite3";
 import { IProjectUpdatedProjector } from "../../../../application/project-knowledge/project/update/IProjectUpdatedProjector.js";
 import { IProjectUpdateReader } from "../../../../application/project-knowledge/project/update/IProjectUpdateReader.js";
-import { ProjectUpdated } from "../../../../domain/project-knowledge/project/update/ProjectUpdatedEvent.js";
+import { ProjectUpdatedEvent } from "../../../../domain/project-knowledge/project/update/ProjectUpdatedEvent.js";
 import { ProjectView } from "../../../../application/project-knowledge/project/ProjectView.js";
 
 export class SqliteProjectUpdatedProjector implements IProjectUpdatedProjector, IProjectUpdateReader {
   constructor(private db: Database) {}
 
-  async applyProjectUpdated(event: ProjectUpdated): Promise<void> {
+  async applyProjectUpdated(event: ProjectUpdatedEvent): Promise<void> {
     const updates: string[] = [];
     const params: unknown[] = [];
 

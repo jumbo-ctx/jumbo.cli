@@ -7,7 +7,7 @@ import { UpdateInvariantCommand } from "../../../../../src/application/solution/
 import { IInvariantUpdatedEventWriter } from "../../../../../src/application/solution/invariants/update/IInvariantUpdatedEventWriter";
 import { IInvariantUpdatedEventReader } from "../../../../../src/application/solution/invariants/update/IInvariantUpdatedEventReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { InvariantEvent, InvariantUpdated } from "../../../../../src/domain/solution/invariants/EventIndex";
+import { InvariantEvent, InvariantUpdatedEvent } from "../../../../../src/domain/solution/invariants/EventIndex";
 import { InvariantEventType } from "../../../../../src/domain/solution/invariants/Constants";
 
 describe("UpdateInvariantCommandHandler", () => {
@@ -68,7 +68,7 @@ describe("UpdateInvariantCommandHandler", () => {
 
       // Verify event was appended to event store
       expect(mockEventWriter.append).toHaveBeenCalledTimes(1);
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdatedEvent;
       expect(appendedEvent.type).toBe(InvariantEventType.UPDATED);
       expect(appendedEvent.aggregateId).toBe("inv_123");
       expect(appendedEvent.version).toBe(2);
@@ -107,7 +107,7 @@ describe("UpdateInvariantCommandHandler", () => {
       await handler.execute(command);
 
       // Assert
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdatedEvent;
       expect(appendedEvent.payload.title).toBe("TLS 1.2+ only");
       expect(appendedEvent.payload.description).toBe("All API calls must use TLS 1.2 or higher");
       expect(appendedEvent.payload.rationale).toBe("Security compliance");
@@ -223,7 +223,7 @@ describe("UpdateInvariantCommandHandler", () => {
       await handler.execute(command);
 
       // Assert
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as InvariantUpdatedEvent;
       expect(appendedEvent.version).toBe(3); // Should be version 3 after two previous events
       expect(appendedEvent.payload.title).toBe("TLS 1.2+ only");
     });

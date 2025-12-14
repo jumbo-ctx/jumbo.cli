@@ -8,8 +8,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { ISO8601 } from "../../../shared/BaseEvent.js";
 
-export interface DecisionReversed extends BaseEvent {
-  readonly type: "DecisionReversed";
+export interface DecisionReversedEvent extends BaseEvent {
+  readonly type: "DecisionReversedEvent";
   readonly payload: {
     readonly reason: string;
     readonly reversedAt: ISO8601;

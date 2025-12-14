@@ -3,8 +3,8 @@ import { BaseEvent } from "../../../shared/BaseEvent.js";
 /**
  * Emitted when a new value proposition is added to the project.
  */
-export interface ValuePropositionAdded extends BaseEvent {
-  readonly type: "ValuePropositionAdded";
+export interface ValuePropositionAddedEvent extends BaseEvent {
+  readonly type: "ValuePropositionAddedEvent";
   readonly payload: {
     readonly title: string;
     readonly description: string;

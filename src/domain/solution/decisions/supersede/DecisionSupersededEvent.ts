@@ -7,8 +7,8 @@
 
 import { BaseEvent, UUID } from "../../../shared/BaseEvent.js";
 
-export interface DecisionSuperseded extends BaseEvent {
-  readonly type: "DecisionSuperseded";
+export interface DecisionSupersededEvent extends BaseEvent {
+  readonly type: "DecisionSupersededEvent";
   readonly payload: {
     readonly supersededBy: UUID;
   };

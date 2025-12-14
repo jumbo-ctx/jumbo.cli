@@ -11,7 +11,7 @@ import {
 } from "../../shared/BaseAggregate.js";
 import { UUID, ISO8601 } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { InvariantEvent, InvariantAdded, InvariantUpdated, InvariantRemoved } from "./EventIndex.js";
+import { InvariantEvent, InvariantAddedEvent, InvariantUpdatedEvent, InvariantRemovedEvent } from "./EventIndex.js";
 import { InvariantEventType, InvariantErrorMessages } from "./Constants.js";
 import { TITLE_RULES } from "./rules/TitleRules.js";
 import { DESCRIPTION_RULES } from "./rules/DescriptionRules.js";
@@ -42,7 +42,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
   static apply(state: InvariantState, event: InvariantEvent): void {
     switch (event.type) {
       case InvariantEventType.ADDED: {
-        const e = event as InvariantAdded;
+        const e = event as InvariantAddedEvent;
         state.title = e.payload.title;
         state.description = e.payload.description;
         state.rationale = e.payload.rationale;
@@ -51,7 +51,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
         break;
       }
       case InvariantEventType.UPDATED: {
-        const e = event as InvariantUpdated;
+        const e = event as InvariantUpdatedEvent;
         if (e.payload.title !== undefined) state.title = e.payload.title;
         if (e.payload.description !== undefined) state.description = e.payload.description;
         if (e.payload.rationale !== undefined) state.rationale = e.payload.rationale;
@@ -119,7 +119,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
     description: string,
     enforcement: string,
     rationale?: string
-  ): InvariantAdded {
+  ): InvariantAddedEvent {
     // Input validation using rule pattern
     ValidationRuleSet.ensure(title, TITLE_RULES);
     ValidationRuleSet.ensure(description, DESCRIPTION_RULES);
@@ -127,7 +127,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
     if (rationale) ValidationRuleSet.ensure(rationale, RATIONALE_RULES);
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<InvariantAdded>(
+    return this.makeEvent<InvariantAddedEvent>(
       InvariantEventType.ADDED,
       {
         title,
@@ -153,7 +153,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
     description?: string;
     rationale?: string | null;
     enforcement?: string;
-  }): InvariantUpdated {
+  }): InvariantUpdatedEvent {
     // Validate at least one field provided
     const hasUpdates =
       updates.title !== undefined ||
@@ -192,7 +192,7 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
     if (updates.rationale !== undefined) payload.rationale = updates.rationale;
     if (updates.enforcement !== undefined) payload.enforcement = updates.enforcement;
 
-    return this.makeEvent<InvariantUpdated>(
+    return this.makeEvent<InvariantUpdatedEvent>(
       InvariantEventType.UPDATED,
       payload,
       Invariant.apply
@@ -205,11 +205,11 @@ export class Invariant extends BaseAggregate<InvariantState, InvariantEvent> {
    *
    * @returns InvariantRemoved event
    */
-  remove(): InvariantRemoved {
+  remove(): InvariantRemovedEvent {
     // Note: No state validation needed - we allow removing at any time
     // The command handler should verify existence before calling this
 
-    return this.makeEvent<InvariantRemoved>(
+    return this.makeEvent<InvariantRemovedEvent>(
       InvariantEventType.REMOVED,
       {
         removedAt: new Date().toISOString() as ISO8601,

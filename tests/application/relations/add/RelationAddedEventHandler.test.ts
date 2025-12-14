@@ -4,7 +4,7 @@
 
 import { RelationAddedEventHandler } from "../../../../src/application/relations/add/RelationAddedEventHandler";
 import { IRelationAddedProjector } from "../../../../src/application/relations/add/IRelationAddedProjector";
-import { RelationAdded } from "../../../../src/domain/relations/add/RelationAddedEvent";
+import { RelationAddedEvent } from "../../../../src/domain/relations/add/RelationAddedEvent";
 import { RelationEventType, EntityType } from "../../../../src/domain/relations/Constants";
 
 describe("RelationAddedEventHandler", () => {
@@ -20,9 +20,9 @@ describe("RelationAddedEventHandler", () => {
     handler = new RelationAddedEventHandler(projector);
   });
 
-  it("should delegate RelationAdded event to projector", async () => {
+  it("should delegate RelationAddedEvent event to projector", async () => {
     // Arrange
-    const event: RelationAdded = {
+    const event: RelationAddedEvent = {
       type: RelationEventType.ADDED,
       aggregateId: "relation_123",
       version: 1,
@@ -46,9 +46,9 @@ describe("RelationAddedEventHandler", () => {
     expect(projector.applyRelationAdded).toHaveBeenCalledWith(event);
   });
 
-  it("should handle RelationAdded event without strength", async () => {
+  it("should handle RelationAddedEvent event without strength", async () => {
     // Arrange
-    const event: RelationAdded = {
+    const event: RelationAddedEvent = {
       type: RelationEventType.ADDED,
       aggregateId: "relation_123",
       version: 1,

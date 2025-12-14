@@ -7,13 +7,13 @@
 
 import { Database } from "better-sqlite3";
 import { ISessionPausedProjector } from "../../../../application/work/sessions/pause/ISessionPausedProjector.js";
-import { SessionPaused } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
+import { SessionPausedEvent } from "../../../../domain/work/sessions/pause/SessionPausedEvent.js";
 import { SessionStatus } from "../../../../domain/work/sessions/Constants.js";
 
 export class SqliteSessionPausedProjector implements ISessionPausedProjector {
   constructor(private db: Database) {}
 
-  async applySessionPaused(event: SessionPaused): Promise<void> {
+  async applySessionPaused(event: SessionPausedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE session_views
       SET status = ?,

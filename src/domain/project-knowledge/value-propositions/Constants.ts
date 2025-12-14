@@ -5,9 +5,9 @@
 
 // Event types
 export const ValuePropositionEventType = {
-  ADDED: "ValuePropositionAdded",
-  UPDATED: "ValuePropositionUpdated",
-  REMOVED: "ValuePropositionRemoved",
+  ADDED: "ValuePropositionAddedEvent",
+  UPDATED: "ValuePropositionUpdatedEvent",
+  REMOVED: "ValuePropositionRemovedEvent",
 } as const;
 
 export type ValuePropositionEventTypeValue =

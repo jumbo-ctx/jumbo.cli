@@ -9,14 +9,14 @@ import { Database } from "better-sqlite3";
 import { IRelationRemovedProjector } from "../../../application/relations/remove/IRelationRemovedProjector.js";
 import { IRelationRemovedReader } from "../../../application/relations/remove/IRelationRemovedReader.js";
 import { IRelationReader } from "../../../application/relations/IRelationReader.js";
-import { RelationRemoved } from "../../../domain/relations/remove/RelationRemovedEvent.js";
+import { RelationRemovedEvent } from "../../../domain/relations/remove/RelationRemovedEvent.js";
 import { RelationView } from "../../../application/relations/RelationView.js";
 import { EntityTypeValue, RelationStrengthValue } from "../../../domain/relations/Constants.js";
 
 export class SqliteRelationRemovedProjector implements IRelationRemovedProjector, IRelationRemovedReader, IRelationReader {
   constructor(private db: Database) {}
 
-  async applyRelationRemoved(event: RelationRemoved): Promise<void> {
+  async applyRelationRemoved(event: RelationRemovedEvent): Promise<void> {
     // Soft delete: mark as removed rather than hard delete
     const stmt = this.db.prepare(`
       UPDATE relation_views

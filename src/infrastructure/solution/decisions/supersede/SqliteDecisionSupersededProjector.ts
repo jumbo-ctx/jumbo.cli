@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDecisionSupersededProjector } from "../../../../application/solution/decisions/supersede/IDecisionSupersededProjector.js";
 import { IDecisionSupersedeReader } from "../../../../application/solution/decisions/supersede/IDecisionSupersedeReader.js";
-import { DecisionSuperseded } from "../../../../domain/solution/decisions/supersede/DecisionSupersededEvent.js";
+import { DecisionSupersededEvent } from "../../../../domain/solution/decisions/supersede/DecisionSupersededEvent.js";
 import { DecisionView } from "../../../../application/solution/decisions/DecisionView.js";
 
 export class SqliteDecisionSupersededProjector implements IDecisionSupersededProjector, IDecisionSupersedeReader {
   constructor(private db: Database) {}
 
-  async applyDecisionSuperseded(event: DecisionSuperseded): Promise<void> {
+  async applyDecisionSuperseded(event: DecisionSupersededEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE decision_views
       SET status = 'superseded',

@@ -1,5 +1,5 @@
 /**
- * FsValuePropositionRemovedEventStore - File system event store for ValuePropositionRemoved event.
+ * FsValuePropositionRemovedEventStore - File system event store for ValuePropositionRemovedEvent event.
  *
  * Implements IValuePropositionRemovedEventWriter for persisting value proposition remove events.
  * Extends the base FsEventStore implementation.

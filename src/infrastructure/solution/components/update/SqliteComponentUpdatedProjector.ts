@@ -8,14 +8,14 @@
 import { Database } from "better-sqlite3";
 import { IComponentUpdatedProjector } from "../../../../application/solution/components/update/IComponentUpdatedProjector.js";
 import { IComponentUpdateReader } from "../../../../application/solution/components/update/IComponentUpdateReader.js";
-import { ComponentUpdated } from "../../../../domain/solution/components/EventIndex.js";
+import { ComponentUpdatedEvent } from "../../../../domain/solution/components/EventIndex.js";
 import { ComponentView } from "../../../../application/solution/components/ComponentView.js";
 import { ComponentTypeValue, ComponentStatusValue } from "../../../../domain/solution/components/Constants.js";
 
 export class SqliteComponentUpdatedProjector implements IComponentUpdatedProjector, IComponentUpdateReader {
   constructor(private db: Database) {}
 
-  async applyComponentUpdated(event: ComponentUpdated): Promise<void> {
+  async applyComponentUpdated(event: ComponentUpdatedEvent): Promise<void> {
     const updates: string[] = [];
     const params: unknown[] = [];
 

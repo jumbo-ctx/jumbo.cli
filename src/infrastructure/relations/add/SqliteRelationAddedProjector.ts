@@ -8,14 +8,14 @@
 import { Database } from "better-sqlite3";
 import { IRelationAddedProjector } from "../../../application/relations/add/IRelationAddedProjector.js";
 import { IRelationAddedReader } from "../../../application/relations/add/IRelationAddedReader.js";
-import { RelationAdded } from "../../../domain/relations/add/RelationAddedEvent.js";
+import { RelationAddedEvent } from "../../../domain/relations/add/RelationAddedEvent.js";
 import { RelationView } from "../../../application/relations/RelationView.js";
 import { EntityTypeValue } from "../../../domain/relations/Constants.js";
 
 export class SqliteRelationAddedProjector implements IRelationAddedProjector, IRelationAddedReader {
   constructor(private db: Database) {}
 
-  async applyRelationAdded(event: RelationAdded): Promise<void> {
+  async applyRelationAdded(event: RelationAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO relation_views (
         relationId, fromEntityType, fromEntityId, toEntityType, toEntityId,

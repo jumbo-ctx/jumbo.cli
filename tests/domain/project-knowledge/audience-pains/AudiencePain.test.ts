@@ -5,8 +5,8 @@
 import { AudiencePain } from "../../../../src/domain/project-knowledge/audience-pains/AudiencePain";
 import { AudiencePainEventType } from "../../../../src/domain/project-knowledge/audience-pains/Constants";
 import {
-  AudiencePainAdded,
-  AudiencePainUpdated,
+  AudiencePainAddedEvent,
+  AudiencePainUpdatedEvent,
 } from "../../../../src/domain/project-knowledge/audience-pains/EventIndex";
 
 describe("AudiencePain Aggregate", () => {
@@ -85,7 +85,7 @@ describe("AudiencePain Aggregate", () => {
       const event = pain.update(
         "Context persistence challenge",
         undefined
-      ) as AudiencePainUpdated;
+      ) as AudiencePainUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(AudiencePainEventType.UPDATED);
@@ -105,7 +105,7 @@ describe("AudiencePain Aggregate", () => {
       const event = pain.update(
         undefined,
         "LLMs cannot maintain context across multiple sessions"
-      ) as AudiencePainUpdated;
+      ) as AudiencePainUpdatedEvent;
 
       // Assert
       expect(event.type).toBe(AudiencePainEventType.UPDATED);
@@ -127,7 +127,7 @@ describe("AudiencePain Aggregate", () => {
       const event = pain.update(
         "Updated Title",
         "Updated description"
-      ) as AudiencePainUpdated;
+      ) as AudiencePainUpdatedEvent;
 
       // Assert
       expect(event.payload.title).toBe("Updated Title");

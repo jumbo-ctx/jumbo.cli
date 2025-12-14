@@ -7,8 +7,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { ComponentStatusValue } from "../Constants.js";
 
-export interface ComponentRemoved extends BaseEvent {
-  readonly type: "ComponentRemoved";
+export interface ComponentRemovedEvent extends BaseEvent {
+  readonly type: "ComponentRemovedEvent";
   readonly payload: {
     readonly status: ComponentStatusValue;
   };

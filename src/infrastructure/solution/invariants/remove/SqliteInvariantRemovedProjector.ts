@@ -5,14 +5,14 @@
 import { Database } from "better-sqlite3";
 import { IInvariantRemovedProjector } from "../../../../application/solution/invariants/remove/IInvariantRemovedProjector.js";
 import { IInvariantRemoveReader } from "../../../../application/solution/invariants/remove/IInvariantRemoveReader.js";
-import { InvariantRemoved } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
+import { InvariantRemovedEvent } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
 import { InvariantView } from "../../../../application/solution/invariants/InvariantView.js";
 import { UUID } from "../../../../domain/shared/BaseEvent.js";
 
 export class SqliteInvariantRemovedProjector implements IInvariantRemovedProjector, IInvariantRemoveReader {
   constructor(private db: Database) {}
 
-  async applyInvariantRemoved(event: InvariantRemoved): Promise<void> {
+  async applyInvariantRemoved(event: InvariantRemovedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       DELETE FROM invariant_views WHERE invariantId = ?
     `);

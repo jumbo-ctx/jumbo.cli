@@ -5,9 +5,9 @@
 
 // Invariant event types
 export const InvariantEventType = {
-  ADDED: "InvariantAdded",
-  UPDATED: "InvariantUpdated",
-  REMOVED: "InvariantRemoved",
+  ADDED: "InvariantAddedEvent",
+  UPDATED: "InvariantUpdatedEvent",
+  REMOVED: "InvariantRemovedEvent",
 } as const;
 
 export type InvariantEventTypeValue =

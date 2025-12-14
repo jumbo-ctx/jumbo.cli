@@ -5,7 +5,7 @@
 import { Database } from "better-sqlite3";
 import { IGuidelineUpdatedProjector } from "../../../../application/solution/guidelines/update/IGuidelineUpdatedProjector.js";
 import { IGuidelineUpdateReader } from "../../../../application/solution/guidelines/update/IGuidelineUpdateReader.js";
-import { GuidelineUpdated } from "../../../../domain/solution/guidelines/update/GuidelineUpdatedEvent.js";
+import { GuidelineUpdatedEvent } from "../../../../domain/solution/guidelines/update/GuidelineUpdatedEvent.js";
 import { GuidelineView } from "../../../../application/solution/guidelines/GuidelineView.js";
 import { UUID } from "../../../../domain/shared/BaseEvent.js";
 import { GuidelineCategoryValue } from "../../../../domain/solution/guidelines/Constants.js";
@@ -13,7 +13,7 @@ import { GuidelineCategoryValue } from "../../../../domain/solution/guidelines/C
 export class SqliteGuidelineUpdatedProjector implements IGuidelineUpdatedProjector, IGuidelineUpdateReader {
   constructor(private db: Database) {}
 
-  async applyGuidelineUpdated(event: GuidelineUpdated): Promise<void> {
+  async applyGuidelineUpdated(event: GuidelineUpdatedEvent): Promise<void> {
     const updates: string[] = [];
     const params: unknown[] = [];
 

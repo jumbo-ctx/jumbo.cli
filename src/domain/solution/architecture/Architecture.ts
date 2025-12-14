@@ -1,7 +1,7 @@
 import { BaseAggregate, AggregateState } from "../../shared/BaseAggregate.js";
 import { UUID } from "../../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../../shared/validation/ValidationRule.js";
-import { ArchitectureEvent, ArchitectureDefined, ArchitectureUpdated, DataStore } from "./EventIndex.js";
+import { ArchitectureEvent, ArchitectureDefinedEvent, ArchitectureUpdatedEvent, DataStore } from "./EventIndex.js";
 import { ArchitectureEventType, ArchitectureErrorMessages } from "./Constants.js";
 import { DESCRIPTION_RULES } from "./rules/DescriptionRules.js";
 import { ORGANIZATION_RULES } from "./rules/OrganizationRules.js";
@@ -34,7 +34,7 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
   static apply(state: ArchitectureState, event: ArchitectureEvent): void {
     switch (event.type) {
       case ArchitectureEventType.DEFINED: {
-        const e = event as ArchitectureDefined;
+        const e = event as ArchitectureDefinedEvent;
         state.description = e.payload.description;
         state.organization = e.payload.organization;
         state.patterns = e.payload.patterns;
@@ -45,7 +45,7 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
         break;
       }
       case ArchitectureEventType.UPDATED: {
-        const e = event as ArchitectureUpdated;
+        const e = event as ArchitectureUpdatedEvent;
         if (e.payload.description !== undefined) state.description = e.payload.description;
         if (e.payload.organization !== undefined) state.organization = e.payload.organization;
         if (e.payload.patterns !== undefined) state.patterns = e.payload.patterns;
@@ -106,7 +106,7 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
     principles?: string[],
     dataStores?: DataStore[],
     stack?: string[]
-  ): ArchitectureDefined {
+  ): ArchitectureDefinedEvent {
     if (this.state.version > 0) {
       throw new Error(ArchitectureErrorMessages.ALREADY_DEFINED);
     }
@@ -131,7 +131,7 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
         stack: stack || []
       },
       Architecture.apply
-    ) as ArchitectureDefined;
+    ) as ArchitectureDefinedEvent;
   }
 
   /**
@@ -145,7 +145,7 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
     principles?: string[];
     dataStores?: DataStore[];
     stack?: string[];
-  }): ArchitectureUpdated {
+  }): ArchitectureUpdatedEvent {
     // Precondition: must be defined first
     if (this.state.version === 0) {
       throw new Error(ArchitectureErrorMessages.NOT_DEFINED);
@@ -176,6 +176,6 @@ export class Architecture extends BaseAggregate<ArchitectureState, ArchitectureE
       ArchitectureEventType.UPDATED,
       updates,
       Architecture.apply
-    ) as ArchitectureUpdated;
+    ) as ArchitectureUpdatedEvent;
   }
 }

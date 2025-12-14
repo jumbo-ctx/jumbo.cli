@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDecisionUpdatedProjector } from "../../../../application/solution/decisions/update/IDecisionUpdatedProjector.js";
 import { IDecisionUpdateReader } from "../../../../application/solution/decisions/update/IDecisionUpdateReader.js";
-import { DecisionUpdated } from "../../../../domain/solution/decisions/update/DecisionUpdatedEvent.js";
+import { DecisionUpdatedEvent } from "../../../../domain/solution/decisions/update/DecisionUpdatedEvent.js";
 import { DecisionView } from "../../../../application/solution/decisions/DecisionView.js";
 
 export class SqliteDecisionUpdatedProjector implements IDecisionUpdatedProjector, IDecisionUpdateReader {
   constructor(private db: Database) {}
 
-  async applyDecisionUpdated(event: DecisionUpdated): Promise<void> {
+  async applyDecisionUpdated(event: DecisionUpdatedEvent): Promise<void> {
     const current = this.db.prepare('SELECT * FROM decision_views WHERE decisionId = ?').get(event.aggregateId) as Record<string, unknown>;
 
     const stmt = this.db.prepare(`

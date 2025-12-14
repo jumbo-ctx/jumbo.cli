@@ -6,7 +6,7 @@ import { PauseSessionCommandHandler } from "../../../../../src/application/work/
 import { ISessionPausedEventWriter } from "../../../../../src/application/work/sessions/pause/ISessionPausedEventWriter";
 import { ISessionPausedEventReader } from "../../../../../src/application/work/sessions/pause/ISessionPausedEventReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { SessionEvent, SessionStarted, SessionPaused } from "../../../../../src/domain/work/sessions/EventIndex";
+import { SessionEvent, SessionStartedEvent, SessionPausedEvent } from "../../../../../src/domain/work/sessions/EventIndex";
 import { BaseEvent } from "../../../../../src/domain/shared/BaseEvent";
 import { IEventHandler } from "../../../../../src/application/shared/messaging/IEventHandler";
 import { AppendResult } from "../../../../../src/application/shared/persistence/IEventStore";
@@ -60,8 +60,8 @@ describe("PauseSessionCommandHandler", () => {
 
   it("should pause an active session and return session ID", async () => {
     // Arrange - create a started session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
@@ -82,8 +82,8 @@ describe("PauseSessionCommandHandler", () => {
 
   it("should persist SessionPaused event to event store", async () => {
     // Arrange - create a started session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
@@ -100,15 +100,15 @@ describe("PauseSessionCommandHandler", () => {
 
     // Assert
     expect(eventStore.events).toHaveLength(2);
-    expect(eventStore.events[1].type).toBe("SessionPaused");
+    expect(eventStore.events[1].type).toBe("SessionPausedEvent");
     expect(eventStore.events[1].aggregateId).toBe("session_123");
     expect(eventStore.events[1].version).toBe(2);
   });
 
   it("should publish SessionPaused event to event bus", async () => {
     // Arrange - create a started session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
@@ -125,7 +125,7 @@ describe("PauseSessionCommandHandler", () => {
 
     // Assert
     expect(eventBus.publishedEvents).toHaveLength(1);
-    expect(eventBus.publishedEvents[0].type).toBe("SessionPaused");
+    expect(eventBus.publishedEvents[0].type).toBe("SessionPausedEvent");
   });
 
   it("should throw error if session does not exist", async () => {
@@ -142,8 +142,8 @@ describe("PauseSessionCommandHandler", () => {
 
   it("should rehydrate aggregate from event history", async () => {
     // Arrange - create a session with multiple events
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
@@ -165,16 +165,16 @@ describe("PauseSessionCommandHandler", () => {
 
   it("should be idempotent - can pause already paused session", async () => {
     // Arrange - create a paused session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
       payload: {},
     };
 
-    const pausedEvent: SessionPaused = {
-      type: "SessionPaused",
+    const pausedEvent: SessionPausedEvent = {
+      type: "SessionPausedEvent",
       aggregateId: "session_123",
       version: 2,
       timestamp: new Date().toISOString(),
@@ -193,7 +193,7 @@ describe("PauseSessionCommandHandler", () => {
     // Assert - should succeed
     expect(result.sessionId).toBe("session_123");
     expect(eventStore.events).toHaveLength(3); // Started + Paused + Paused
-    expect(eventStore.events[2].type).toBe("SessionPaused");
+    expect(eventStore.events[2].type).toBe("SessionPausedEvent");
     expect(eventStore.events[2].version).toBe(3);
   });
 });

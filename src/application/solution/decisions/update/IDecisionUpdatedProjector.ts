@@ -3,11 +3,11 @@
  * Infrastructure layer will implement this.
  */
 
-import { DecisionUpdated } from "../../../../domain/solution/decisions/update/DecisionUpdatedEvent.js";
+import { DecisionUpdatedEvent } from "../../../../domain/solution/decisions/update/DecisionUpdatedEvent.js";
 
 export interface IDecisionUpdatedProjector {
   /**
    * Applies a DecisionUpdated event to update the materialized view.
    */
-  applyDecisionUpdated(event: DecisionUpdated): Promise<void>;
+  applyDecisionUpdated(event: DecisionUpdatedEvent): Promise<void>;
 }

@@ -8,8 +8,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { GuidelineCategoryValue } from "../Constants.js";
 
-export interface GuidelineAdded extends BaseEvent {
-  readonly type: "GuidelineAdded";
+export interface GuidelineAddedEvent extends BaseEvent {
+  readonly type: "GuidelineAddedEvent";
   readonly payload: {
     readonly category: GuidelineCategoryValue;
     readonly title: string;

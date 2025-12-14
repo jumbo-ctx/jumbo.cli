@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDependencyUpdatedProjector } from "../../../../application/solution/dependencies/update/IDependencyUpdatedProjector.js";
 import { IDependencyUpdateReader } from "../../../../application/solution/dependencies/update/IDependencyUpdateReader.js";
-import { DependencyUpdated } from "../../../../domain/solution/dependencies/update/DependencyUpdatedEvent.js";
+import { DependencyUpdatedEvent } from "../../../../domain/solution/dependencies/update/DependencyUpdatedEvent.js";
 import { DependencyView } from "../../../../application/solution/dependencies/DependencyView.js";
 
 export class SqliteDependencyUpdatedProjector implements IDependencyUpdatedProjector, IDependencyUpdateReader {
   constructor(private db: Database) {}
 
-  async applyDependencyUpdated(event: DependencyUpdated): Promise<void> {
+  async applyDependencyUpdated(event: DependencyUpdatedEvent): Promise<void> {
     const updates: string[] = [];
     const params: unknown[] = [];
 

@@ -1,5 +1,5 @@
 /**
- * FsAudienceRemovedEventStore - File system event store for AudienceRemoved event.
+ * FsAudienceRemovedEventStore - File system event store for AudienceRemovedEvent event.
  *
  * Implements IAudienceRemovedEventWriter for persisting audience remove events.
  * Extends the base FsEventStore implementation.

@@ -8,14 +8,14 @@
 import { Database } from "better-sqlite3";
 import { IComponentRemovedProjector } from "../../../../application/solution/components/remove/IComponentRemovedProjector.js";
 import { IComponentRemoveReader } from "../../../../application/solution/components/remove/IComponentRemoveReader.js";
-import { ComponentRemoved } from "../../../../domain/solution/components/EventIndex.js";
+import { ComponentRemovedEvent } from "../../../../domain/solution/components/EventIndex.js";
 import { ComponentView } from "../../../../application/solution/components/ComponentView.js";
 import { ComponentTypeValue, ComponentStatusValue } from "../../../../domain/solution/components/Constants.js";
 
 export class SqliteComponentRemovedProjector implements IComponentRemovedProjector, IComponentRemoveReader {
   constructor(private db: Database) {}
 
-  async applyComponentRemoved(event: ComponentRemoved): Promise<void> {
+  async applyComponentRemoved(event: ComponentRemovedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE component_views
       SET status = ?,

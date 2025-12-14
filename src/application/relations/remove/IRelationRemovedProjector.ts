@@ -1,9 +1,9 @@
-import { RelationRemoved } from "../../../domain/relations/remove/RelationRemovedEvent.js";
+import { RelationRemovedEvent } from "../../../domain/relations/remove/RelationRemovedEvent.js";
 
 /**
- * Port interface for projecting RelationRemoved event to the read model.
+ * Port interface for projecting RelationRemovedEvent event to the read model.
  * Used by RelationRemovedEventHandler to update the projection store.
  */
 export interface IRelationRemovedProjector {
-  applyRelationRemoved(event: RelationRemoved): Promise<void>;
+  applyRelationRemoved(event: RelationRemovedEvent): Promise<void>;
 }

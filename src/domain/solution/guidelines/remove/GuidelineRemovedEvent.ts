@@ -7,8 +7,8 @@
 
 import { BaseEvent, ISO8601 } from "../../../shared/BaseEvent.js";
 
-export interface GuidelineRemoved extends BaseEvent {
-  readonly type: "GuidelineRemoved";
+export interface GuidelineRemovedEvent extends BaseEvent {
+  readonly type: "GuidelineRemovedEvent";
   readonly payload: {
     readonly removedAt: ISO8601;
     readonly reason?: string;

@@ -34,7 +34,7 @@ describe("RebuildDatabaseCommandHandler", () => {
     // Arrange
     const events: BaseEvent[] = [
       {
-        type: "SessionStarted",
+        type: "SessionStartedEvent",
         aggregateId: "session_1",
         version: 1,
         timestamp: "2025-01-01T10:00:00Z",
@@ -46,7 +46,7 @@ describe("RebuildDatabaseCommandHandler", () => {
         timestamp: "2025-01-01T10:01:00Z",
       },
       {
-        type: "ComponentAdded",
+        type: "ComponentAddedEvent",
         aggregateId: "component_1",
         version: 1,
         timestamp: "2025-01-01T10:02:00Z",

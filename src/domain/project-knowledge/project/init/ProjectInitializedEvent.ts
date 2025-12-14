@@ -7,8 +7,8 @@
 
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 
-export interface ProjectInitialized extends BaseEvent {
-  readonly type: "ProjectInitialized";
+export interface ProjectInitializedEvent extends BaseEvent {
+  readonly type: "ProjectInitializedEvent";
   readonly payload: {
     readonly name: string;
     readonly purpose: string | null;

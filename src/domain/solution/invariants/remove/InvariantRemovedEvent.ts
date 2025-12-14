@@ -7,8 +7,8 @@
 
 import { BaseEvent, ISO8601 } from "../../../shared/BaseEvent.js";
 
-export interface InvariantRemoved extends BaseEvent {
-  readonly type: "InvariantRemoved";
+export interface InvariantRemovedEvent extends BaseEvent {
+  readonly type: "InvariantRemovedEvent";
   readonly payload: {
     readonly removedAt: ISO8601;
   };

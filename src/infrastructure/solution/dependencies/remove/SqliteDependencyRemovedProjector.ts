@@ -8,13 +8,13 @@
 import { Database } from "better-sqlite3";
 import { IDependencyRemovedProjector } from "../../../../application/solution/dependencies/remove/IDependencyRemovedProjector.js";
 import { IDependencyRemoveReader } from "../../../../application/solution/dependencies/remove/IDependencyRemoveReader.js";
-import { DependencyRemoved } from "../../../../domain/solution/dependencies/remove/DependencyRemovedEvent.js";
+import { DependencyRemovedEvent } from "../../../../domain/solution/dependencies/remove/DependencyRemovedEvent.js";
 import { DependencyView } from "../../../../application/solution/dependencies/DependencyView.js";
 
 export class SqliteDependencyRemovedProjector implements IDependencyRemovedProjector, IDependencyRemoveReader {
   constructor(private db: Database) {}
 
-  async applyDependencyRemoved(event: DependencyRemoved): Promise<void> {
+  async applyDependencyRemoved(event: DependencyRemovedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE dependency_views
       SET status = 'removed',

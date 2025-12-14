@@ -7,7 +7,7 @@ import { UpdateProjectCommand } from "../../../../../src/application/project-kno
 import { IProjectUpdatedEventWriter } from "../../../../../src/application/project-knowledge/project/update/IProjectUpdatedEventWriter";
 import { IProjectUpdateReader } from "../../../../../src/application/project-knowledge/project/update/IProjectUpdateReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { ProjectEvent, ProjectUpdated } from "../../../../../src/domain/project-knowledge/project/EventIndex";
+import { ProjectEvent, ProjectUpdatedEvent } from "../../../../../src/domain/project-knowledge/project/EventIndex";
 import { ProjectEventType } from "../../../../../src/domain/project-knowledge/project/Constants";
 import { ProjectView } from "../../../../../src/application/project-knowledge/project/ProjectView";
 import { AppendResult } from "../../../../../src/application/shared/persistence/IEventStore";
@@ -93,7 +93,7 @@ describe("UpdateProjectCommandHandler", () => {
 
       // Verify event was appended to event store
       expect(mockEventWriter.append).toHaveBeenCalledTimes(1);
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdatedEvent;
       expect(appendedEvent.type).toBe(ProjectEventType.UPDATED);
       expect(appendedEvent.aggregateId).toBe("project");
       expect(appendedEvent.version).toBe(2);
@@ -145,7 +145,7 @@ describe("UpdateProjectCommandHandler", () => {
       expect(result.changedFields).toContain("purpose");
       expect(result.changedFields).toContain("boundaries");
 
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdatedEvent;
       expect(appendedEvent.payload.purpose).toBe("New purpose");
       expect(appendedEvent.payload.boundaries).toEqual(["Boundary 1", "Boundary 2"]);
     });
@@ -275,7 +275,7 @@ describe("UpdateProjectCommandHandler", () => {
       await handler.execute(command);
 
       // Assert
-      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdated;
+      const appendedEvent = mockEventWriter.append.mock.calls[0][0] as ProjectUpdatedEvent;
       expect(appendedEvent.version).toBe(3); // Should be version 3 after two previous events
       expect(appendedEvent.payload.boundaries).toEqual(["New boundary"]);
     });

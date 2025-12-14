@@ -1,5 +1,5 @@
 /**
- * SqliteValuePropositionAddedProjector - SQLite projector for ValuePropositionAdded event.
+ * SqliteValuePropositionAddedProjector - SQLite projector for ValuePropositionAddedEvent event.
  *
  * Implements IValuePropositionAddedProjector for projecting value proposition add events
  * to the SQLite read model.
@@ -7,12 +7,12 @@
 
 import { Database } from "better-sqlite3";
 import { IValuePropositionAddedProjector } from "../../../../application/project-knowledge/value-propositions/add/IValuePropositionAddedProjector.js";
-import { ValuePropositionAdded } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
+import { ValuePropositionAddedEvent } from "../../../../domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
 
 export class SqliteValuePropositionAddedProjector implements IValuePropositionAddedProjector {
   constructor(private db: Database) {}
 
-  async applyValuePropositionAdded(event: ValuePropositionAdded): Promise<void> {
+  async applyValuePropositionAdded(event: ValuePropositionAddedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO value_proposition_views (
         valuePropositionId, title, description, benefit,

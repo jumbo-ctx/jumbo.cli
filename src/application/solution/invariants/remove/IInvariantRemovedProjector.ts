@@ -1,9 +1,9 @@
-import { InvariantRemoved } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
+import { InvariantRemovedEvent } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
 
 /**
  * Port interface for projecting InvariantRemovedEvent to the read model.
  * Used by InvariantRemovedEventHandler to update the projection store.
  */
 export interface IInvariantRemovedProjector {
-  applyInvariantRemoved(event: InvariantRemoved): Promise<void>;
+  applyInvariantRemoved(event: InvariantRemovedEvent): Promise<void>;
 }

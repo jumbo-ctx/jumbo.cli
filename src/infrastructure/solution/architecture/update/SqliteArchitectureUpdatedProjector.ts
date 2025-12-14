@@ -5,13 +5,13 @@
 import { Database } from "better-sqlite3";
 import { IArchitectureUpdatedProjector } from "../../../../application/solution/architecture/update/IArchitectureUpdatedProjector.js";
 import { IArchitectureUpdateReader } from "../../../../application/solution/architecture/update/IArchitectureUpdateReader.js";
-import { ArchitectureUpdated } from "../../../../domain/solution/architecture/update/ArchitectureUpdatedEvent.js";
+import { ArchitectureUpdatedEvent } from "../../../../domain/solution/architecture/update/ArchitectureUpdatedEvent.js";
 import { ArchitectureView } from "../../../../application/solution/architecture/ArchitectureView.js";
 
 export class SqliteArchitectureUpdatedProjector implements IArchitectureUpdatedProjector, IArchitectureUpdateReader {
   constructor(private db: Database) {}
 
-  async applyArchitectureUpdated(event: ArchitectureUpdated): Promise<void> {
+  async applyArchitectureUpdated(event: ArchitectureUpdatedEvent): Promise<void> {
     const updates: string[] = [];
     const params: unknown[] = [];
 

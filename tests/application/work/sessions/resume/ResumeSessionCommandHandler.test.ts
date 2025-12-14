@@ -6,7 +6,7 @@ import { ResumeSessionCommandHandler } from "../../../../../src/application/work
 import { ISessionResumedEventWriter } from "../../../../../src/application/work/sessions/resume/ISessionResumedEventWriter";
 import { ISessionResumedEventReader } from "../../../../../src/application/work/sessions/resume/ISessionResumedEventReader";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus";
-import { SessionEvent, SessionStarted, SessionPaused, SessionResumed } from "../../../../../src/domain/work/sessions/EventIndex";
+import { SessionEvent, SessionStartedEvent, SessionPausedEvent, SessionResumedEvent } from "../../../../../src/domain/work/sessions/EventIndex";
 import { BaseEvent } from "../../../../../src/domain/shared/BaseEvent";
 import { IEventHandler } from "../../../../../src/application/shared/messaging/IEventHandler";
 import { AppendResult } from "../../../../../src/application/shared/persistence/IEventStore";
@@ -60,15 +60,15 @@ describe("ResumeSessionCommandHandler", () => {
 
   it("should resume a paused session and return session ID", async () => {
     // Arrange - create a paused session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
       payload: {},
     };
-    const pausedEvent: SessionPaused = {
-      type: "SessionPaused",
+    const pausedEvent: SessionPausedEvent = {
+      type: "SessionPausedEvent",
       aggregateId: "session_123",
       version: 2,
       timestamp: new Date().toISOString(),
@@ -89,15 +89,15 @@ describe("ResumeSessionCommandHandler", () => {
 
   it("should persist SessionResumed event to event store", async () => {
     // Arrange - create a paused session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
       payload: {},
     };
-    const pausedEvent: SessionPaused = {
-      type: "SessionPaused",
+    const pausedEvent: SessionPausedEvent = {
+      type: "SessionPausedEvent",
       aggregateId: "session_123",
       version: 2,
       timestamp: new Date().toISOString(),
@@ -114,22 +114,22 @@ describe("ResumeSessionCommandHandler", () => {
 
     // Assert
     expect(eventStore.events).toHaveLength(3);
-    expect(eventStore.events[2].type).toBe("SessionResumed");
+    expect(eventStore.events[2].type).toBe("SessionResumedEvent");
     expect(eventStore.events[2].aggregateId).toBe("session_123");
     expect(eventStore.events[2].version).toBe(3);
   });
 
   it("should publish SessionResumed event to event bus", async () => {
     // Arrange - create a paused session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
       payload: {},
     };
-    const pausedEvent: SessionPaused = {
-      type: "SessionPaused",
+    const pausedEvent: SessionPausedEvent = {
+      type: "SessionPausedEvent",
       aggregateId: "session_123",
       version: 2,
       timestamp: new Date().toISOString(),
@@ -146,7 +146,7 @@ describe("ResumeSessionCommandHandler", () => {
 
     // Assert
     expect(eventBus.publishedEvents).toHaveLength(1);
-    expect(eventBus.publishedEvents[0].type).toBe("SessionResumed");
+    expect(eventBus.publishedEvents[0].type).toBe("SessionResumedEvent");
   });
 
   it("should throw error if session does not exist", async () => {
@@ -163,15 +163,15 @@ describe("ResumeSessionCommandHandler", () => {
 
   it("should rehydrate aggregate from event history", async () => {
     // Arrange - create a session with multiple events
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
       payload: {},
     };
-    const pausedEvent: SessionPaused = {
-      type: "SessionPaused",
+    const pausedEvent: SessionPausedEvent = {
+      type: "SessionPausedEvent",
       aggregateId: "session_123",
       version: 2,
       timestamp: new Date().toISOString(),
@@ -193,8 +193,8 @@ describe("ResumeSessionCommandHandler", () => {
 
   it("should be idempotent - can resume already active session", async () => {
     // Arrange - create an active session
-    const startedEvent: SessionStarted = {
-      type: "SessionStarted",
+    const startedEvent: SessionStartedEvent = {
+      type: "SessionStartedEvent",
       aggregateId: "session_123",
       version: 1,
       timestamp: new Date().toISOString(),
@@ -213,7 +213,7 @@ describe("ResumeSessionCommandHandler", () => {
     // Assert - should succeed
     expect(result.sessionId).toBe("session_123");
     expect(eventStore.events).toHaveLength(2); // Started + Resumed
-    expect(eventStore.events[1].type).toBe("SessionResumed");
+    expect(eventStore.events[1].type).toBe("SessionResumedEvent");
     expect(eventStore.events[1].version).toBe(2);
   });
 });

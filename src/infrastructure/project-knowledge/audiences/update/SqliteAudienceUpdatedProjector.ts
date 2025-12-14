@@ -1,5 +1,5 @@
 /**
- * SqliteAudienceUpdatedProjector - SQLite projector for AudienceUpdated event.
+ * SqliteAudienceUpdatedProjector - SQLite projector for AudienceUpdatedEvent event.
  *
  * Implements IAudienceUpdatedProjector for projecting audience update events
  * to the SQLite read model.
@@ -7,12 +7,12 @@
 
 import { Database } from "better-sqlite3";
 import { IAudienceUpdatedProjector } from "../../../../application/project-knowledge/audiences/update/IAudienceUpdatedProjector.js";
-import { AudienceUpdated } from "../../../../domain/project-knowledge/audiences/update/AudienceUpdatedEvent.js";
+import { AudienceUpdatedEvent } from "../../../../domain/project-knowledge/audiences/update/AudienceUpdatedEvent.js";
 
 export class SqliteAudienceUpdatedProjector implements IAudienceUpdatedProjector {
   constructor(private db: Database) {}
 
-  async applyAudienceUpdated(event: AudienceUpdated): Promise<void> {
+  async applyAudienceUpdated(event: AudienceUpdatedEvent): Promise<void> {
     // Build dynamic UPDATE statement for only changed fields
     const updates: string[] = [];
     const params: unknown[] = [];

@@ -7,8 +7,8 @@ import { RemoveValuePropositionCommand } from "../../../../../src/application/pr
 import { IValuePropositionRemovedEventWriter } from "../../../../../src/application/project-knowledge/value-propositions/remove/IValuePropositionRemovedEventWriter.js";
 import { IValuePropositionRemoveReader } from "../../../../../src/application/project-knowledge/value-propositions/remove/IValuePropositionRemoveReader.js";
 import { IEventBus } from "../../../../../src/application/shared/messaging/IEventBus.js";
-import { ValuePropositionAdded } from "../../../../../src/domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
-import { ValuePropositionRemoved } from "../../../../../src/domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionAddedEvent } from "../../../../../src/domain/project-knowledge/value-propositions/add/ValuePropositionAddedEvent.js";
+import { ValuePropositionRemovedEvent } from "../../../../../src/domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
 import { ValuePropositionEventType } from "../../../../../src/domain/project-knowledge/value-propositions/Constants.js";
 import { ValuePropositionView } from "../../../../../src/application/project-knowledge/value-propositions/ValuePropositionView.js";
 
@@ -20,7 +20,7 @@ describe("RemoveValuePropositionCommandHandler", () => {
 
   // Test data
   const valueId = "value_test123";
-  const addedEvent: ValuePropositionAdded = {
+  const addedEvent: ValuePropositionAddedEvent = {
     type: ValuePropositionEventType.ADDED,
     aggregateId: valueId,
     version: 1,
@@ -100,7 +100,7 @@ describe("RemoveValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionRemoved;
+        .calls[0][0] as ValuePropositionRemovedEvent;
       expect(appendCall.type).toBe(ValuePropositionEventType.REMOVED);
       expect(appendCall.aggregateId).toBe(valueId);
       expect(appendCall.version).toBe(2);
@@ -182,7 +182,7 @@ describe("RemoveValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionRemoved;
+        .calls[0][0] as ValuePropositionRemovedEvent;
       expect(appendCall.version).toBe(2); // First version is 1, remove is 2
     });
 
@@ -211,7 +211,7 @@ describe("RemoveValuePropositionCommandHandler", () => {
 
       // Assert
       const appendCall = (eventWriter.append as jest.Mock).mock
-        .calls[0][0] as ValuePropositionRemoved;
+        .calls[0][0] as ValuePropositionRemovedEvent;
       expect(appendCall.version).toBe(3);
     });
   });

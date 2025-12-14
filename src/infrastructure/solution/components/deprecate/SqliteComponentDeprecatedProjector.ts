@@ -8,14 +8,14 @@
 import { Database } from "better-sqlite3";
 import { IComponentDeprecatedProjector } from "../../../../application/solution/components/deprecate/IComponentDeprecatedProjector.js";
 import { IComponentDeprecateReader } from "../../../../application/solution/components/deprecate/IComponentDeprecateReader.js";
-import { ComponentDeprecated } from "../../../../domain/solution/components/EventIndex.js";
+import { ComponentDeprecatedEvent } from "../../../../domain/solution/components/EventIndex.js";
 import { ComponentView } from "../../../../application/solution/components/ComponentView.js";
 import { ComponentTypeValue, ComponentStatusValue } from "../../../../domain/solution/components/Constants.js";
 
 export class SqliteComponentDeprecatedProjector implements IComponentDeprecatedProjector, IComponentDeprecateReader {
   constructor(private db: Database) {}
 
-  async applyComponentDeprecated(event: ComponentDeprecated): Promise<void> {
+  async applyComponentDeprecated(event: ComponentDeprecatedEvent): Promise<void> {
     const stmt = this.db.prepare(`
       UPDATE component_views
       SET status = ?,

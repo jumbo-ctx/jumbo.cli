@@ -5,10 +5,10 @@
 
 // Session event types
 export const SessionEventType = {
-  STARTED: "SessionStarted",
-  PAUSED: "SessionPaused",
-  RESUMED: "SessionResumed",
-  ENDED: "SessionEnded",
+  STARTED: "SessionStartedEvent",
+  PAUSED: "SessionPausedEvent",
+  RESUMED: "SessionResumedEvent",
+  ENDED: "SessionEndedEvent",
 } as const;
 
 export type SessionEventTypeValue =

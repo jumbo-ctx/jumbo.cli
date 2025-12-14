@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { ProjectUpdated } from "../../../../domain/project-knowledge/project/update/ProjectUpdatedEvent.js";
+import { ProjectUpdatedEvent } from "../../../../domain/project-knowledge/project/update/ProjectUpdatedEvent.js";
 import { IProjectUpdatedProjector } from "./IProjectUpdatedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class ProjectUpdatedEventHandler implements IEventHandler {
   constructor(private readonly projector: IProjectUpdatedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const projectUpdatedEvent = event as ProjectUpdated;
+    const projectUpdatedEvent = event as ProjectUpdatedEvent;
     await this.projector.applyProjectUpdated(projectUpdatedEvent);
   }
 }

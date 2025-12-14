@@ -5,9 +5,9 @@
 
 // Audience event types
 export const AudienceEventType = {
-  ADDED: "AudienceAdded",
-  UPDATED: "AudienceUpdated",
-  REMOVED: "AudienceRemoved",
+  ADDED: "AudienceAddedEvent",
+  UPDATED: "AudienceUpdatedEvent",
+  REMOVED: "AudienceRemovedEvent",
 } as const;
 
 export type AudienceEventTypeValue =

@@ -7,8 +7,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { ComponentStatusValue } from "../Constants.js";
 
-export interface ComponentDeprecated extends BaseEvent {
-  readonly type: "ComponentDeprecated";
+export interface ComponentDeprecatedEvent extends BaseEvent {
+  readonly type: "ComponentDeprecatedEvent";
   readonly payload: {
     readonly reason: string | null;
     readonly status: ComponentStatusValue;

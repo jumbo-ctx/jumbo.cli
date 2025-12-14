@@ -5,8 +5,8 @@
 
 // Architecture event types
 export const ArchitectureEventType = {
-  DEFINED: 'ArchitectureDefined',
-  UPDATED: 'ArchitectureUpdated'
+  DEFINED: 'ArchitectureDefinedEvent',
+  UPDATED: 'ArchitectureUpdatedEvent'
 } as const;
 
 export type ArchitectureEventTypeValue = typeof ArchitectureEventType[keyof typeof ArchitectureEventType];

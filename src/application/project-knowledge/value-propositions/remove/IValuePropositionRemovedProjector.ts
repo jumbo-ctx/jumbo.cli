@@ -1,13 +1,13 @@
 /**
- * Port interface for projecting ValuePropositionRemoved events.
+ * Port interface for projecting ValuePropositionRemovedEvent events.
  * Infrastructure layer will implement this.
  */
 
-import { ValuePropositionRemoved } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
+import { ValuePropositionRemovedEvent } from "../../../../domain/project-knowledge/value-propositions/remove/ValuePropositionRemovedEvent.js";
 
 export interface IValuePropositionRemovedProjector {
   /**
-   * Applies a ValuePropositionRemoved event to update the materialized view.
+   * Applies a ValuePropositionRemovedEvent event to update the materialized view.
    */
-  applyValuePropositionRemoved(event: ValuePropositionRemoved): Promise<void>;
+  applyValuePropositionRemoved(event: ValuePropositionRemovedEvent): Promise<void>;
 }

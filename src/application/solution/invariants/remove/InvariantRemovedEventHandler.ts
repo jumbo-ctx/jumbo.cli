@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { InvariantRemoved } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
+import { InvariantRemovedEvent } from "../../../../domain/solution/invariants/remove/InvariantRemovedEvent.js";
 import { IInvariantRemovedProjector } from "./IInvariantRemovedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class InvariantRemovedEventHandler implements IEventHandler {
   constructor(private readonly projector: IInvariantRemovedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const invariantRemovedEvent = event as InvariantRemoved;
+    const invariantRemovedEvent = event as InvariantRemovedEvent;
     await this.projector.applyInvariantRemoved(invariantRemovedEvent);
   }
 }

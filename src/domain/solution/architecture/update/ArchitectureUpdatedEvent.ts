@@ -8,8 +8,8 @@
 import { BaseEvent } from "../../../shared/BaseEvent.js";
 import { DataStore } from "../define/ArchitectureDefinedEvent.js";
 
-export interface ArchitectureUpdated extends BaseEvent {
-  readonly type: "ArchitectureUpdated";
+export interface ArchitectureUpdatedEvent extends BaseEvent {
+  readonly type: "ArchitectureUpdatedEvent";
   readonly payload: {
     readonly description?: string;
     readonly organization?: string;

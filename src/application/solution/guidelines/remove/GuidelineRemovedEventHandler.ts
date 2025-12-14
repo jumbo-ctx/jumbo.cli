@@ -1,6 +1,6 @@
 import { IEventHandler } from "../../../shared/messaging/IEventHandler.js";
 import { BaseEvent } from "../../../../domain/shared/BaseEvent.js";
-import { GuidelineRemoved } from "../../../../domain/solution/guidelines/remove/GuidelineRemovedEvent.js";
+import { GuidelineRemovedEvent } from "../../../../domain/solution/guidelines/remove/GuidelineRemovedEvent.js";
 import { IGuidelineRemovedProjector } from "./IGuidelineRemovedProjector.js";
 
 /**
@@ -13,7 +13,7 @@ export class GuidelineRemovedEventHandler implements IEventHandler {
   constructor(private readonly projector: IGuidelineRemovedProjector) {}
 
   async handle(event: BaseEvent): Promise<void> {
-    const guidelineRemovedEvent = event as GuidelineRemoved;
+    const guidelineRemovedEvent = event as GuidelineRemovedEvent;
     await this.projector.applyGuidelineRemoved(guidelineRemovedEvent);
   }
 }

@@ -1,15 +1,15 @@
 import { BaseAggregate, AggregateState } from "../shared/BaseAggregate.js";
 import { UUID } from "../shared/BaseEvent.js";
 import { ValidationRuleSet } from "../shared/validation/ValidationRule.js";
-import { RelationAdded } from "./add/RelationAddedEvent.js";
-import { RelationRemoved } from "./remove/RelationRemovedEvent.js";
+import { RelationAddedEvent } from "./add/RelationAddedEvent.js";
+import { RelationRemovedEvent } from "./remove/RelationRemovedEvent.js";
 import { RelationEventType, EntityTypeValue, RelationStrengthValue, RelationErrorMessages, formatErrorMessage } from "./Constants.js";
 import { ENTITY_TYPE_RULES, ENTITY_ID_RULES } from "./rules/EntityTypeRules.js";
 import { RELATION_TYPE_RULES } from "./rules/RelationTypeRules.js";
 import { DESCRIPTION_RULES } from "./rules/DescriptionRules.js";
 
 // Re-export RelationEvent type for convenience
-export type RelationEvent = RelationAdded | RelationRemoved;
+export type RelationEvent = RelationAddedEvent | RelationRemovedEvent;
 
 export interface RelationState extends AggregateState {
   id: UUID;
@@ -36,7 +36,7 @@ export class Relation extends BaseAggregate<RelationState, RelationEvent> {
   static apply(state: RelationState, event: RelationEvent): void {
     switch (event.type) {
       case RelationEventType.ADDED: {
-        const e = event as RelationAdded;
+        const e = event as RelationAddedEvent;
         state.fromEntityType = e.payload.fromEntityType;
         state.fromEntityId = e.payload.fromEntityId;
         state.toEntityType = e.payload.toEntityType;
@@ -105,7 +105,7 @@ export class Relation extends BaseAggregate<RelationState, RelationEvent> {
     relationType: string,
     description: string,
     strength?: RelationStrengthValue
-  ): RelationAdded {
+  ): RelationAddedEvent {
     // Validation using rule pattern
     ValidationRuleSet.ensure(fromEntityType, ENTITY_TYPE_RULES('from'));
     ValidationRuleSet.ensure(fromEntityId, ENTITY_ID_RULES('from'));
@@ -120,7 +120,7 @@ export class Relation extends BaseAggregate<RelationState, RelationEvent> {
     }
 
     // Use BaseAggregate.makeEvent
-    return this.makeEvent<RelationAdded>(
+    return this.makeEvent<RelationAddedEvent>(
       RelationEventType.ADDED,
       {
         fromEntityType,
@@ -135,7 +135,7 @@ export class Relation extends BaseAggregate<RelationState, RelationEvent> {
     );
   }
 
-  remove(reason?: string): RelationRemoved {
+  remove(reason?: string): RelationRemovedEvent {
     // State validation - ensure relation hasn't already been removed
     if (this.state.status === 'removed') {
       throw new Error(
@@ -146,7 +146,7 @@ export class Relation extends BaseAggregate<RelationState, RelationEvent> {
     }
 
     // Create and return event
-    return this.makeEvent<RelationRemoved>(
+    return this.makeEvent<RelationRemovedEvent>(
       RelationEventType.REMOVED,
       {
         fromEntityType: this.state.fromEntityType,
