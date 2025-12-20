@@ -40,9 +40,13 @@ const program = new Command();
 
 program
   .name("jumbo")
-  .description(process.stdout.isTTY ? chalk.gray("AI MEMORY LIKE AN ELEPHANT - CONTEXT ENGINEERING AUTOMATED.") : "")
   .version(cliVersion)
-  .usage("<command> <subcommand> [flags]");
+  .usage("<command> <subcommand> [flags]")
+  .configureHelp({
+    // Align option descriptions to start at column 26 (matching command descriptions)
+    // Formula: 2 (indent) + padWidth + 2 (gap) = 26, so padWidth = 22
+    padWidth: () => 22,
+  });
 
 // Global flags for output control
 program
