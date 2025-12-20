@@ -369,7 +369,7 @@ export async function showElephantWalkBanner(content: string[], projectName: str
   const coloredFrames: string[][] = [];
 
   for (let i = 0; i < totalFrames; i++) {
-    const rawFrame = getAnimationFrame(i);
+    const rawFrame = getAnimationFrame(i, version, projectName);
 
     // Calculate color progress:
     // Forward (0 to midPoint): 0 -> 1 (blue to red)
