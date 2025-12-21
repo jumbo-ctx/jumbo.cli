@@ -29,7 +29,7 @@ import {
  * Command metadata for auto-registration
  */
 export const metadata: CommandMetadata = {
-  description: "Define a new goal with objective, success criteria, and scope",
+  description: "Define a new goal with objective, criteria, and scope",
   category: "work",
   requiredOptions: [],
   options: [
