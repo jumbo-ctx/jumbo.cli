@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Goal chaining**: Goals can now be linked together in a chain. Use `--next-goal <goalId>`
+  to set which goal should follow the new goal, or `--previous-goal <goalId>` to update
+  an existing goal to point to the new goal as its successor.
+
+### Changed
+
+- **Animated banner**: Redesigned CLI banner with character-map-based animation frames
+  for improved visual presentation.
+
+### Fixed
+
+- **Help screen alignment**: Command descriptions now align at a fixed column position
+  for consistent formatting across all command categories.
 
 ## [1.0.0-alpha.8] - 2025-12-18
 
